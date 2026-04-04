@@ -1,0 +1,62 @@
+{
+  "name": "openclaw-skill-visual-config-client",
+  "productName": "OpenClaw 技能可视化配置客户端",
+  "version": "0.1.0",
+  "description": "一个直接连接本地 OpenClaw skills 数据的桌面客户端，支持技能浏览、结构查看和手动配置。",
+  "main": "src/main.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node scripts/run-electron.js .",
+    "dev": "node scripts/run-electron.js .",
+    "dev:web": "node server.js",
+    "smoke": "node scripts/run-electron.js . --smoke",
+    "test": "node --test tests/*.test.js",
+    "package": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "keywords": [
+    "openclaw",
+    "skills",
+    "desktop-client",
+    "electron"
+  ],
+  "author": "xieluo",
+  "license": "MIT",
+  "build": {
+    "appId": "ai.openclaw.skills.desktop",
+    "productName": "OpenClaw 技能可视化配置客户端",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "public/**/*",
+      "src/**/*",
+      "server.js",
+      "README.md",
+      "LICENSE",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ],
+      "artifactName": "${productName}-${version}-${os}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^41.1.1",
+    "electron-builder": "^26.8.1"
+  }
+}

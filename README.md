@@ -1,20 +1,56 @@
 # ClawForge
 
-ClawForge is an open-source desktop and browser-based workspace for OpenClaw Skill browsing, configuration, and prompt generation.
+[![Release](https://img.shields.io/github/v/release/kelin3296-jpg/openclaw-skill-visual-config-client)](https://github.com/kelin3296-jpg/openclaw-skill-visual-config-client/releases)
+[![CI](https://img.shields.io/github/actions/workflow/status/kelin3296-jpg/openclaw-skill-visual-config-client/ci.yml?branch=main)](https://github.com/kelin3296-jpg/openclaw-skill-visual-config-client/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/kelin3296-jpg/openclaw-skill-visual-config-client)](LICENSE)
 
-中文说明：这是一个面向本地 OpenClaw 环境的可视化配置项目，支持浏览真实 Skill、查看结构文件、手动修改配置，以及生成并发送 Skill Prompt。
+ClawForge is an open-source desktop and browser workspace for browsing, configuring, and generating OpenClaw Skills from real local data.
 
-## What It Does
+中文说明：ClawForge 是一个面向本地 OpenClaw 环境的开源可视化工作台，支持浏览真实 Skill、查看结构文件、手动修改配置，以及生成并发送 Skill Prompt。
 
-- Read real local OpenClaw Skill data instead of rendering mock content
-- Browse Skills by source, status, and search keywords
-- Drill into a Skill workbench to inspect files, config hints, and editable content
-- Enable or disable Skills from the library UI
-- Generate structured Skill prompts from a multi-step scenario form
-- Send prompts to OpenClaw Control and attach compatible reference files
-- Run in Electron or browser mode
+## Why ClawForge
 
-## App Modes
+OpenClaw Skills usually live across local config, skill folders, `SKILL.md`, and supporting files. ClawForge brings these parts together into one workspace so you can:
+
+- inspect real Skills instead of mock examples
+- understand what each file means inside a Skill
+- edit config and local content safely
+- generate new Skill prompts from structured scenarios
+- send prompts to OpenClaw Control in one step
+
+## Highlights
+
+- Real local data: reads actual OpenClaw Skills and config from your machine
+- Skill Library: search, filter, enable, disable, and drill into Skills quickly
+- Skill Workbench: inspect file structure, config hints, and editable files
+- Skill Generator: build reusable scenario-based Skill prompts with a guided flow
+- OpenClaw send flow: open the real Google Chrome browser and auto-send compatible prompt payloads
+- Dual runtime: Electron desktop client plus browser mode for UI iteration
+- Cross-platform support: works with macOS and Windows path conventions
+
+## Main Areas
+
+### Skill Generator
+
+- three-step guided form
+- reference material management
+- preview modal for final prompt
+- one-click send to OpenClaw
+
+### Skill Library
+
+- lightweight search and filtering
+- dense multi-card layout
+- enable / disable Skill switches
+- drill-down workbench modal
+
+### Skill Workbench
+
+- file structure overview
+- file purpose and config hints
+- local editable file content with save-back
+
+## Quick Start
 
 ### Desktop client
 
@@ -36,39 +72,29 @@ Then open:
 http://127.0.0.1:4318
 ```
 
-## Main Areas
+## Requirements
 
-### Skill Generator
-
-- Multi-step scenario form
-- Reference material management
-- Prompt preview modal
-- One-click send to OpenClaw
-
-### Skill Library
-
-- Search and lightweight filtering
-- Three-column card layout
-- Enable / disable switches
-- Drill-down Skill workbench modal
-
-### Skill Workbench
-
-- File structure overview
-- File meaning and config hints
-- Local file editing and save-back
+- Node.js 20+
+- A local OpenClaw environment
+- Google Chrome installed if you want the automated browser send flow
 
 ## Project Structure
 
-- `public/index.html`: UI layout and styling
-- `public/app.js`: client state, interactions, and browser-mode flows
-- `public/skill-generator-shared.js`: shared generator logic
-- `src/main.js`: Electron entry
-- `src/preload.js`: desktop bridge
-- `src/server.js`: local API and static server
-- `src/lib/openclaw-service.js`: local OpenClaw data and config logic
-- `src/lib/openclaw-control.js`: OpenClaw Control browser automation
-- `tests/`: service, UI, generator, and control tests
+```text
+public/
+  index.html                    UI layout and styles
+  app.js                        client state and interactions
+  skill-generator-shared.js     shared generator logic
+src/
+  main.js                       Electron entry
+  preload.js                    desktop bridge
+  server.js                     local API server
+  lib/
+    openclaw-service.js         local OpenClaw data + config logic
+    openclaw-control.js         OpenClaw Control browser automation
+tests/
+  *.test.js                     service, UI, generator, and control coverage
+```
 
 ## Scripts
 
@@ -81,7 +107,9 @@ npm run smoke
 npm run dist
 ```
 
-## Windows Compatibility
+## Platform Notes
+
+### Windows
 
 The project already handles these default Windows paths:
 
@@ -97,6 +125,12 @@ OPENCLAW_CONFIG_PATH=C:\path\to\openclaw.json
 OPENCLAW_STATE_DIR=C:\path\to\.openclaw
 ```
 
+### macOS
+
+- supports local OpenClaw config discovery
+- supports Chrome-based OpenClaw Control automation
+- supports Electron desktop packaging
+
 ## Validation
 
 Run before publishing or opening a PR:
@@ -105,6 +139,13 @@ Run before publishing or opening a PR:
 npm test
 npm run smoke
 ```
+
+## Roadmap
+
+- richer release assets for macOS and Windows
+- better attachment coverage for more material types
+- improved Skill health diagnostics and repair flows
+- optional screenshots and demo walkthroughs in the repo homepage
 
 ## Documentation
 

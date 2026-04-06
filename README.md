@@ -8,6 +8,8 @@ ClawForge is an open-source desktop and browser workspace for browsing, configur
 
 中文说明：ClawForge 是一个面向本地 OpenClaw 环境的开源可视化工作台，支持浏览真实 Skill、查看结构文件、手动修改配置，以及生成并发送 Skill Prompt。
 
+![ClawForge cover](docs/media/repo-cover.png)
+
 ## Why ClawForge
 
 OpenClaw Skills usually live across local config, skill folders, `SKILL.md`, and supporting files. ClawForge brings these parts together into one workspace so you can:
@@ -49,6 +51,24 @@ OpenClaw Skills usually live across local config, skill folders, `SKILL.md`, and
 - file structure overview
 - file purpose and config hints
 - local editable file content with save-back
+
+## Screenshots
+
+### Skill Generator
+
+![Skill Generator](docs/media/readme-generator.png)
+
+### Skill Library
+
+![Skill Library](docs/media/readme-library.png)
+
+### Skill Workbench
+
+![Skill Workbench](docs/media/readme-workbench.png)
+
+### Prompt Preview
+
+![Prompt Preview](docs/media/readme-prompt-preview.png)
 
 ## Quick Start
 

@@ -6,3 +6,9 @@ coverage/
 .DS_Store
 .env
 .env.local
+.claude/
+.idea/
+.vscode/
+playwright-report/
+test-results/
+tmp/

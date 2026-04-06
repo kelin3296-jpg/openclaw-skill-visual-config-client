@@ -3,6 +3,10 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const { createOpenClawService } = require('./lib/openclaw-service');
+const {
+  automateBrowserPromptSend,
+  buildOpenClawControlUrl
+} = require('./lib/openclaw-control');
 
 const PUBLIC_ROOT = path.join(__dirname, '..', 'public');
 const DEFAULT_HOST = process.env.HOST || '127.0.0.1';
@@ -31,7 +35,7 @@ function parseRequestBody(req) {
     let body = '';
     req.on('data', (chunk) => {
       body += chunk;
-      if (body.length > 1024 * 1024) {
+      if (body.length > 25 * 1024 * 1024) {
         req.destroy();
         reject(new Error('Body too large'));
       }
@@ -78,9 +82,38 @@ function sendFile(res, filePath) {
   });
 }
 
+function createControlBridge(options = {}) {
+  if (options.controlBridge) {
+    return options.controlBridge;
+  }
+
+    return {
+      async getLaunchState() {
+        const { url } = buildOpenClawControlUrl();
+        return { url };
+      },
+    async sendPrompt(prompt, referenceMaterials = []) {
+      const launchState = buildOpenClawControlUrl();
+
+      try {
+        return await automateBrowserPromptSend(prompt, { referenceMaterials });
+      } catch (error) {
+        return {
+          opened: false,
+          submitted: false,
+          url: launchState.url,
+          mode: 'url-only',
+          detail: error instanceof Error ? error.message : String(error)
+        };
+      }
+    }
+  };
+}
+
 function createServer(options = {}) {
   const staticDir = options.staticDir || PUBLIC_ROOT;
   const service = options.service || createOpenClawService(options.serviceOptions);
+  const controlBridge = createControlBridge(options);
 
   const server = http.createServer(async (req, res) => {
     try {
@@ -97,6 +130,20 @@ function createServer(options = {}) {
         return;
       }
 
+      if (req.method === 'GET' && url.pathname === '/api/openclaw/control/url') {
+        sendJson(res, 200, await controlBridge.getLaunchState());
+        return;
+      }
+
+      if (req.method === 'POST' && url.pathname === '/api/openclaw/control/send') {
+        const body = await parseRequestBody(req);
+        sendJson(res, 200, await controlBridge.sendPrompt(
+          String(body.prompt || ''),
+          Array.isArray(body.referenceMaterials) ? body.referenceMaterials : []
+        ));
+        return;
+      }
+
       const detailMatch = url.pathname.match(/^\/api\/skills\/([^/]+)$/);
       if (req.method === 'GET' && detailMatch) {
         sendJson(res, 200, await service.getSkillDetail(
@@ -106,10 +153,29 @@ function createServer(options = {}) {
         return;
       }
 
+      const fileMatch = url.pathname.match(/^\/api\/skills\/([^/]+)\/file$/);
+      if (req.method === 'GET' && fileMatch) {
+        sendJson(res, 200, await service.getSkillFile(
+          decodeURIComponent(fileMatch[1]),
+          decodeURIComponent(url.searchParams.get('path') || '')
+        ));
+        return;
+      }
+
       const configMatch = url.pathname.match(/^\/api\/skills\/([^/]+)\/config$/);
       if (req.method === 'POST' && configMatch) {
         const body = await parseRequestBody(req);
         sendJson(res, 200, await service.updateSkillConfig(decodeURIComponent(configMatch[1]), body));
+        return;
+      }
+
+      if (req.method === 'POST' && fileMatch) {
+        const body = await parseRequestBody(req);
+        sendJson(res, 200, await service.updateSkillFile(
+          decodeURIComponent(fileMatch[1]),
+          decodeURIComponent(body.path || ''),
+          String(body.content || '')
+        ));
         return;
       }
 

@@ -5,30 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>OpenClaw 技能可视化配置客户端</title>
     <style>
+      @import url("https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700&display=swap");
+
       :root {
-        --bg: #f5f1e8;
-        --panel: rgba(255, 252, 247, 0.94);
-        --panel-strong: #fffdf9;
-        --panel-soft: rgba(255, 251, 244, 0.7);
-        --line: rgba(74, 60, 46, 0.12);
-        --line-strong: rgba(74, 60, 46, 0.22);
-        --text: #201912;
-        --muted: #74685b;
-        --accent: #b85c38;
-        --accent-soft: rgba(184, 92, 56, 0.12);
-        --olive: #576347;
-        --olive-soft: rgba(87, 99, 71, 0.12);
-        --blue: #4267b2;
-        --blue-soft: rgba(66, 103, 178, 0.12);
-        --gold: #aa7a17;
-        --gold-soft: rgba(170, 122, 23, 0.12);
-        --danger: #b03f3f;
-        --danger-soft: rgba(176, 63, 63, 0.12);
-        --shadow: 0 20px 48px rgba(39, 28, 16, 0.08);
+        --bg: #050810;
+        --bg-elevated: #111827;
+        --panel: rgba(10, 15, 26, 0.72);
+        --panel-strong: rgba(10, 15, 26, 0.88);
+        --panel-soft: rgba(17, 24, 39, 0.74);
+        --line: rgba(136, 146, 176, 0.15);
+        --line-strong: rgba(255, 77, 77, 0.3);
+        --text: #f0f4ff;
+        --muted: #8892b0;
+        --accent: #ff4d4d;
+        --accent-strong: #991b1b;
+        --accent-soft: rgba(255, 77, 77, 0.15);
+        --cyan: #00e5cc;
+        --cyan-soft: rgba(0, 229, 204, 0.15);
+        --olive: #00e5cc;
+        --olive-soft: rgba(0, 229, 204, 0.15);
+        --blue: #9bb0d8;
+        --blue-soft: rgba(155, 176, 216, 0.14);
+        --gold: #fbbf24;
+        --gold-soft: rgba(251, 191, 36, 0.14);
+        --danger: #ff7070;
+        --danger-soft: rgba(255, 112, 112, 0.15);
+        --surface-quiet: rgba(255, 255, 255, 0.08);
+        --surface-quiet-hover: rgba(255, 255, 255, 0.12);
+        --surface-input: rgba(17, 24, 39, 0.82);
+        --surface-input-strong: rgba(17, 24, 39, 0.92);
+        --surface-card: rgba(10, 15, 26, 0.72);
+        --surface-card-strong: rgba(10, 15, 26, 0.84);
+        --surface-selected: rgba(255, 77, 77, 0.14);
+        --overlay: rgba(5, 8, 16, 0.62);
+        --placeholder: rgba(136, 146, 176, 0.56);
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+        --shadow-coral: 0 18px 40px rgba(255, 77, 77, 0.18);
+        --shadow-cyan: 0 18px 40px rgba(0, 229, 204, 0.14);
         --radius-xl: 28px;
         --radius-lg: 20px;
         --radius-md: 16px;
         --radius-sm: 10px;
+        --font-display: "Clash Display", "Inter", "PingFang SC", sans-serif;
+        --font-body: "Satoshi", "Inter", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+        --font-mono: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+      }
+
+      html[data-theme="light"] {
+        --bg: #fcfeff;
+        --bg-elevated: #f5f9ff;
+        --panel: rgba(255, 255, 255, 0.88);
+        --panel-strong: rgba(255, 255, 255, 0.96);
+        --panel-soft: rgba(255, 255, 255, 0.74);
+        --line: rgba(15, 23, 42, 0.16);
+        --line-strong: rgba(239, 75, 88, 0.34);
+        --text: #0b1220;
+        --muted: #5f7290;
+        --accent: #ef4b58;
+        --accent-strong: #c43645;
+        --accent-soft: rgba(239, 75, 88, 0.14);
+        --cyan: #008f87;
+        --cyan-soft: rgba(0, 143, 135, 0.16);
+        --olive: #008f87;
+        --olive-soft: rgba(0, 143, 135, 0.16);
+        --blue: #2e405c;
+        --blue-soft: rgba(46, 64, 92, 0.12);
+        --gold: #c17b11;
+        --gold-soft: rgba(193, 123, 17, 0.14);
+        --danger: #c43645;
+        --danger-soft: rgba(196, 54, 69, 0.14);
+        --surface-quiet: rgba(15, 23, 42, 0.06);
+        --surface-quiet-hover: rgba(15, 23, 42, 0.1);
+        --surface-input: rgba(255, 255, 255, 0.86);
+        --surface-input-strong: rgba(255, 255, 255, 0.94);
+        --surface-card: rgba(255, 255, 255, 0.72);
+        --surface-card-strong: rgba(255, 255, 255, 0.84);
+        --surface-selected: rgba(239, 75, 88, 0.12);
+        --overlay: rgba(11, 18, 32, 0.24);
+        --placeholder: rgba(95, 114, 144, 0.48);
+        --shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+        --shadow-coral: 0 18px 40px rgba(239, 75, 88, 0.18);
+        --shadow-cyan: 0 18px 40px rgba(0, 143, 135, 0.16);
       }
 
       * {
@@ -39,11 +96,60 @@
         margin: 0;
         min-height: 100vh;
         color: var(--text);
+        position: relative;
+        overflow-x: hidden;
         background:
-          radial-gradient(circle at top left, rgba(184, 92, 56, 0.09), transparent 24%),
-          radial-gradient(circle at bottom right, rgba(87, 99, 71, 0.1), transparent 28%),
-          linear-gradient(180deg, #faf6ef 0%, var(--bg) 100%);
-        font-family: "Iowan Old Style", "Palatino Linotype", "PingFang SC", "Noto Serif SC", serif;
+          radial-gradient(ellipse 90% 60% at 18% 10%, rgba(255, 77, 77, 0.12), transparent 52%),
+          radial-gradient(ellipse 70% 70% at 86% 18%, rgba(0, 229, 204, 0.09), transparent 50%),
+          radial-gradient(ellipse 90% 70% at 50% 100%, rgba(255, 77, 77, 0.06), transparent 54%),
+          linear-gradient(180deg, #050810 0%, var(--bg) 100%);
+        font-family: var(--font-body);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      html[data-theme="light"] body {
+        background:
+          radial-gradient(1200px circle at 12% -10%, rgba(224, 53, 67, 0.07), transparent 58%),
+          radial-gradient(900px circle at 88% -12%, rgba(0, 143, 135, 0.08), transparent 56%),
+          radial-gradient(720px circle at 50% 112%, rgba(239, 75, 88, 0.05), transparent 58%),
+          linear-gradient(180deg, #fbfdff 0%, var(--bg) 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.72;
+        background-image:
+          radial-gradient(2px 2px at 24px 32px, rgba(255, 255, 255, 0.8), transparent),
+          radial-gradient(2px 2px at 112px 78px, rgba(255, 77, 77, 0.24), transparent),
+          radial-gradient(1px 1px at 180px 46px, rgba(0, 229, 204, 0.24), transparent),
+          radial-gradient(1px 1px at 252px 124px, rgba(255, 255, 255, 0.45), transparent);
+        background-size: 320px 180px;
+        z-index: -1;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+        background:
+          radial-gradient(ellipse 80% 50% at 20% 20%, rgba(255, 77, 77, 0.12), transparent 50%),
+          radial-gradient(ellipse 60% 60% at 80% 30%, rgba(0, 229, 204, 0.08), transparent 50%),
+          radial-gradient(ellipse 90% 70% at 50% 90%, rgba(255, 77, 77, 0.06), transparent 50%);
+      }
+
+      html[data-theme="light"] body::before {
+        opacity: 0.3;
+        filter: saturate(0.6);
+      }
+
+      html[data-theme="light"] body::after {
+        opacity: 0.38;
       }
 
       a {
@@ -52,7 +158,9 @@
       }
 
       button,
-      input {
+      input,
+      textarea,
+      select {
         font: inherit;
       }
 
@@ -60,19 +168,45 @@
         margin: 0;
       }
 
+      [hidden] {
+        display: none !important;
+      }
+
       .shell {
-        max-width: 1500px;
+        max-width: 1640px;
         margin: 0 auto;
-        padding: 18px 18px 32px;
+        padding: 24px 20px 40px;
+      }
+
+      .top-shell {
+        position: sticky;
+        top: 0;
+        z-index: 48;
+        display: grid;
+        gap: 14px;
+        margin-bottom: 20px;
+        padding-top: 8px;
+        background: linear-gradient(180deg, rgba(5, 8, 16, 0.98) 0%, rgba(5, 8, 16, 0.92) 76%, rgba(5, 8, 16, 0) 100%);
+        backdrop-filter: blur(8px);
+      }
+
+      html[data-theme="light"] .top-shell {
+        background: linear-gradient(180deg, rgba(252, 254, 255, 0.98) 0%, rgba(252, 254, 255, 0.94) 76%, rgba(252, 254, 255, 0) 100%);
       }
 
       .app-bar {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 20px;
-        padding: 20px 22px;
-        margin-bottom: 18px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) auto;
+        align-items: start;
+        gap: 28px;
+        padding: 28px;
+        background:
+          linear-gradient(135deg, rgba(255, 77, 77, 0.08) 0%, rgba(10, 15, 26, 0.92) 42%, rgba(0, 229, 204, 0.08) 100%);
+      }
+
+      html[data-theme="light"] .app-bar {
+        background:
+          linear-gradient(135deg, rgba(239, 75, 88, 0.07) 0%, rgba(255, 255, 255, 0.98) 42%, rgba(0, 143, 135, 0.08) 100%);
       }
 
       .app-brand {
@@ -83,17 +217,40 @@
       }
 
       .brand-mark {
-        width: 50px;
-        height: 50px;
-        border-radius: 16px;
+        width: 62px;
+        height: 62px;
+        border-radius: 20px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, rgba(184, 92, 56, 0.16), rgba(87, 99, 71, 0.08));
-        border: 1px solid rgba(74, 60, 46, 0.1);
-        font-size: 18px;
-        font-weight: 700;
-        letter-spacing: 0.04em;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, rgba(255, 77, 77, 0.15), rgba(17, 24, 39, 0.96) 48%, rgba(0, 229, 204, 0.12));
+        border: 1px solid rgba(255, 77, 77, 0.18);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), var(--shadow-coral);
+      }
+
+      html[data-theme="light"] .brand-mark {
+        background: linear-gradient(135deg, rgba(239, 75, 88, 0.15), rgba(255, 255, 255, 0.95) 48%, rgba(0, 143, 135, 0.14));
+        border: 1px solid rgba(239, 75, 88, 0.16);
+      }
+
+      .brand-mark::after {
+        content: "";
+        position: absolute;
+        inset: auto -10px -18px auto;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(239, 75, 88, 0.22), transparent 72%);
+      }
+
+      .brand-mark svg {
+        position: relative;
+        z-index: 1;
+        width: 44px;
+        height: 44px;
+        filter: drop-shadow(0 10px 22px rgba(255, 77, 77, 0.28));
       }
 
       .brand-eyebrow {
@@ -109,98 +266,117 @@
         font-size: clamp(30px, 4vw, 42px);
         line-height: 1.12;
         letter-spacing: -0.04em;
+        font-family: var(--font-display);
+        font-weight: 700;
+        background: linear-gradient(135deg, #c93342 0%, var(--accent) 62%, var(--cyan) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
       }
 
       .app-desc {
-        max-width: 760px;
-        margin-top: 10px;
+        max-width: 700px;
+        margin-top: 12px;
         font-size: 15px;
         line-height: 1.8;
         color: var(--muted);
+        font-weight: 500;
       }
 
-      .app-pills {
+      .app-actions {
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
         justify-content: flex-end;
+        align-items: center;
       }
 
-      .pill {
+      .theme-toggle {
+        width: 46px;
+        height: 46px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 77, 77, 0.22);
+        background: rgba(10, 15, 26, 0.72);
+        color: var(--text);
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        min-height: 32px;
-        padding: 0 12px;
-        border-radius: 999px;
-        background: var(--panel-soft);
-        border: 1px solid var(--line);
-        color: var(--muted);
-        font-size: 12px;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 0 0 1px rgba(255, 77, 77, 0.06), var(--shadow-coral);
+        transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
       }
 
-      .overview-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 16px;
-        margin: 18px 0 26px;
+      .theme-toggle:hover {
+        transform: translateY(-1px);
+        border-color: rgba(255, 77, 77, 0.36);
+        box-shadow: 0 0 0 1px rgba(255, 77, 77, 0.12), 0 14px 28px rgba(255, 77, 77, 0.18);
       }
 
-      .overview-card {
+      .theme-toggle-icon {
+        font-size: 20px;
+        line-height: 1;
+      }
+
+      html[data-theme="light"] .theme-toggle {
+        background: rgba(255, 255, 255, 0.88);
+        border-color: rgba(239, 75, 88, 0.2);
+      }
+
+      .view-tabs {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 10px;
+        width: fit-content;
+        max-width: 100%;
+        padding: 10px;
+        margin: 0;
         background: var(--panel);
-        border: 1px solid var(--line);
-        border-radius: var(--radius-lg);
-        padding: 22px;
-        box-shadow: var(--shadow);
-        min-height: 168px;
-        position: relative;
-        overflow: hidden;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
       }
 
-      .overview-card::before {
-        content: "";
-        position: absolute;
-        right: -28px;
-        bottom: -28px;
-        width: 96px;
-        height: 96px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, rgba(184, 92, 56, 0.07), rgba(87, 99, 71, 0.02));
+      .view-tab {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 1 auto;
+        min-width: 132px;
+        min-height: 44px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        background: var(--surface-quiet);
+        color: var(--text);
+        padding: 10px 18px;
+        cursor: pointer;
+        transition: 0.2s ease;
+        line-height: 1.45;
+        text-align: center;
+        white-space: normal;
+        word-break: break-word;
+        font-family: var(--font-display);
+        font-weight: 600;
       }
 
-      .overview-label {
-        position: relative;
-        z-index: 1;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--muted);
+      .view-tab:hover {
+        border-color: var(--line-strong);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
       }
 
-      .overview-value {
-        position: relative;
-        z-index: 1;
-        margin-top: 12px;
-        font-size: 28px;
-        line-height: 1.2;
-        font-weight: 700;
+      .view-tab.active {
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+        color: #fff;
+        box-shadow: 0 12px 28px rgba(239, 75, 88, 0.26);
       }
 
-      .overview-meta {
-        position: relative;
-        z-index: 1;
-        margin-top: 10px;
+      .library-page {
         display: grid;
-        gap: 8px;
-        color: var(--muted);
-        font-size: 13px;
-        line-height: 1.6;
+        gap: 20px;
       }
 
       .dashboard-wrapper {
         display: grid;
-        grid-template-columns: 280px 1fr 360px;
+        grid-template-columns: 1fr;
         gap: 20px;
         align-items: start;
       }
@@ -210,16 +386,26 @@
         border: 1px solid var(--line);
         border-radius: var(--radius-lg);
         box-shadow: var(--shadow);
+        backdrop-filter: blur(12px);
       }
 
-      .sidebar-nav,
-      .workbench {
-        position: sticky;
-        top: 20px;
-      }
-
-      .sidebar-nav {
+      .library-rail {
         padding: 22px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .library-rail-head h2 {
+        margin-top: 8px;
+        font-size: 24px;
+        line-height: 1.18;
+      }
+
+      .library-rail-copy {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.7;
       }
 
       .section-title {
@@ -229,51 +415,92 @@
         text-transform: uppercase;
         color: var(--muted);
         margin-bottom: 12px;
+        font-family: var(--font-display);
       }
 
       .search-box {
         width: 100%;
         border: 1px solid var(--line);
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.7);
+        border-radius: 14px;
+        background: var(--surface-input);
         padding: 12px 14px;
         color: var(--text);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
+
+      .search-box:focus,
+      .text-input:focus,
+      .text-area:focus,
+      .sort-select:focus {
+        outline: none;
+        border-color: var(--line-strong);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+      }
+
+      .library-controls {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 0;
+      }
+
+      .library-controls-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .library-controls-head .search-box {
+        flex: 1 1 320px;
+        max-width: 420px;
       }
 
       .filter-list {
-        display: grid;
-        gap: 8px;
-        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
       }
 
       .filter-item {
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        width: 100%;
+        justify-content: center;
+        gap: 10px;
         border: 1px solid transparent;
-        border-radius: 12px;
-        background: rgba(32, 25, 18, 0.04);
+        border-radius: 999px;
+        background: var(--surface-quiet);
         color: var(--text);
-        padding: 12px 14px;
+        padding: 10px 16px;
         cursor: pointer;
         transition: 0.2s ease;
+        line-height: 1.35;
+        text-align: center;
+        white-space: normal;
+        word-break: break-word;
       }
 
       .filter-item:hover {
         border-color: var(--line-strong);
-        background: rgba(32, 25, 18, 0.06);
+        background: var(--surface-quiet-hover);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
       }
 
       .filter-item.active {
-        background: var(--accent);
-        color: #fff;
+        background: linear-gradient(135deg, rgba(255, 77, 77, 0.22), rgba(17, 24, 39, 0.92) 64%, rgba(0, 229, 204, 0.16));
+        color: var(--text);
+        border-color: rgba(255, 77, 77, 0.28);
+        box-shadow: 0 10px 24px rgba(255, 77, 77, 0.16);
+      }
+
+      html[data-theme="light"] .filter-item.active {
+        background: linear-gradient(135deg, rgba(239, 75, 88, 0.1), rgba(255, 255, 255, 0.98) 68%, rgba(0, 143, 135, 0.08));
+        color: var(--accent-strong);
+        border-color: rgba(239, 75, 88, 0.18);
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
       }
 
       .filter-count {
-        min-width: 28px;
-        text-align: right;
+        min-width: 24px;
         font-size: 12px;
         opacity: 0.78;
       }
@@ -294,6 +521,20 @@
         border-top: 1px solid rgba(74, 60, 46, 0.08);
       }
 
+      .meta-disclosure summary {
+        list-style: none;
+        cursor: pointer;
+        margin-bottom: 0;
+      }
+
+      .meta-disclosure summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .meta-disclosure[open] summary {
+        margin-bottom: 12px;
+      }
+
       .meta-item,
       .detail-item,
       .flow-item,
@@ -301,7 +542,7 @@
       .task-item {
         padding: 12px 14px;
         border-radius: 12px;
-        background: rgba(32, 25, 18, 0.04);
+        background: rgba(255, 255, 255, 0.04);
         font-size: 13px;
         line-height: 1.65;
       }
@@ -322,21 +563,26 @@
         min-width: 0;
       }
 
+      .skill-center .skill-stage {
+        min-height: 100%;
+      }
+
       .skill-stage {
-        padding: 22px;
+        padding: 24px;
       }
 
       .skill-header {
         display: flex;
         justify-content: space-between;
-        align-items: flex-end;
+        align-items: flex-start;
         gap: 16px;
-        margin-bottom: 18px;
+        margin-bottom: 20px;
       }
 
       .skill-header h2 {
         font-size: 28px;
         line-height: 1.15;
+        font-family: var(--font-display);
       }
 
       .skill-subtitle {
@@ -347,11 +593,35 @@
       }
 
       .skill-toolbar {
+        display: grid;
+        grid-template-columns: minmax(180px, 220px) auto;
+        gap: 10px 14px;
+        align-items: end;
+        justify-content: end;
+      }
+
+      .toolbar-actions,
+      .workbench-actions {
         display: flex;
-        align-items: center;
-        gap: 10px;
         flex-wrap: wrap;
-        justify-content: flex-end;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .sort-field {
+        display: grid;
+        gap: 6px;
+        min-width: 180px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .sort-select {
+        min-height: 42px;
+        padding: 10px 14px;
       }
 
       .small-btn,
@@ -360,43 +630,59 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
-        min-height: 38px;
+        min-height: 44px;
         border-radius: 999px;
         border: 1px solid var(--line);
-        background: transparent;
+        background: var(--surface-quiet);
         color: var(--text);
-        padding: 0 14px;
+        padding: 11px 18px;
         cursor: pointer;
         transition: 0.2s ease;
+        line-height: 1.35;
+        text-align: center;
+        white-space: normal;
+        word-break: break-word;
+        font-weight: 600;
       }
 
       .small-btn:hover,
       .ghost-link:hover {
-        border-color: var(--accent);
+        border-color: var(--line-strong);
         color: var(--accent);
-        background: var(--accent-soft);
+        background: var(--surface-quiet-hover);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
       }
 
       .refresh-state {
+        grid-column: 1 / -1;
+        justify-self: end;
         font-size: 12px;
         color: var(--muted);
       }
 
       .skill-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 14px;
       }
 
       .skill-card {
         position: relative;
         overflow: hidden;
-        padding: 18px;
-        border-radius: var(--radius-md);
+        padding: 20px;
+        border-radius: 18px;
         border: 1px solid var(--line);
-        background: var(--panel-strong);
+        background:
+          linear-gradient(180deg, rgba(10, 15, 26, 0.9), rgba(17, 24, 39, 0.86));
         cursor: pointer;
         transition: 0.2s ease;
+        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
+      }
+
+      html[data-theme="light"] .skill-card {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 249, 255, 0.94));
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
       }
 
       .skill-card::before {
@@ -406,14 +692,35 @@
         width: 92px;
         height: 92px;
         border-radius: 50%;
-        background: linear-gradient(135deg, rgba(184, 92, 56, 0.06), rgba(87, 99, 71, 0.02));
+        background: radial-gradient(circle, rgba(255, 77, 77, 0.22), rgba(0, 229, 204, 0.08) 72%, transparent 74%);
+      }
+
+      html[data-theme="light"] .skill-card::before {
+        background: radial-gradient(circle, rgba(239, 75, 88, 0.16), rgba(0, 143, 135, 0.04) 72%, transparent 74%);
       }
 
       .skill-card:hover,
       .skill-card.selected {
-        border-color: var(--accent);
+        border-color: rgba(255, 77, 77, 0.32);
         transform: translateY(-3px);
-        box-shadow: var(--shadow);
+        box-shadow: 0 18px 40px rgba(255, 77, 77, 0.18);
+      }
+
+      html[data-theme="light"] .skill-card:hover,
+      html[data-theme="light"] .skill-card.selected {
+        border-color: rgba(239, 75, 88, 0.26);
+        box-shadow: 0 18px 40px rgba(239, 75, 88, 0.14);
+      }
+
+      .skill-card.is-disabled {
+        border-color: rgba(136, 146, 176, 0.14);
+        background: linear-gradient(180deg, rgba(10, 15, 26, 0.74), rgba(17, 24, 39, 0.7));
+      }
+
+      .skill-card.is-disabled .skill-card-desc,
+      .skill-card.is-disabled .card-tags,
+      .skill-card.is-disabled .skill-switch-copy {
+        opacity: 0.7;
       }
 
       .skill-card-body {
@@ -421,14 +728,23 @@
         z-index: 1;
       }
 
+      .skill-card-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
       .skill-card h3 {
         font-size: 17px;
         line-height: 1.35;
+        font-family: var(--font-display);
+        font-weight: 600;
       }
 
       .skill-card-desc {
         margin-top: 8px;
-        min-height: 66px;
+        min-height: 52px;
         font-size: 13px;
         line-height: 1.6;
         color: var(--muted);
@@ -445,14 +761,197 @@
         margin-top: 14px;
       }
 
+      .health-badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 26px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1.4;
+      }
+
+      .health-badge.healthy {
+        background: var(--olive-soft);
+        color: var(--olive);
+      }
+
+      .health-badge.warning {
+        background: var(--gold-soft);
+        color: var(--gold);
+      }
+
+      .health-badge.error {
+        background: var(--danger-soft);
+        color: var(--danger);
+      }
+
+      .risk-summary-list {
+        display: grid;
+        gap: 6px;
+        margin-top: 12px;
+      }
+
+      .risk-summary-item {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .skill-card-footer {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-top: 16px;
+        padding-top: 14px;
+        border-top: 1px solid rgba(74, 60, 46, 0.08);
+      }
+
+      .skill-switch-copy {
+        display: grid;
+        gap: 4px;
+        min-width: 0;
+      }
+
+      .skill-switch-label {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .skill-switch-status {
+        font-size: 14px;
+        line-height: 1.45;
+        font-weight: 700;
+      }
+
+      .skill-switch-status.enabled {
+        color: var(--cyan);
+      }
+
+      .skill-switch-status.disabled {
+        color: rgba(136, 146, 176, 0.82);
+      }
+
+      .skill-toggle {
+        position: relative;
+        width: 56px;
+        height: 32px;
+        flex: 0 0 auto;
+        cursor: pointer;
+      }
+
+      .skill-toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .skill-toggle-track {
+        position: absolute;
+        inset: 0;
+        border-radius: 999px;
+        background: rgba(136, 146, 176, 0.18);
+        border: 1px solid rgba(136, 146, 176, 0.2);
+        transition: 0.16s ease;
+        cursor: pointer;
+      }
+
+      .skill-toggle-track::before {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 21px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-top-color: rgba(255, 255, 255, 0.88);
+        opacity: 0;
+        transform: scale(0.7);
+        transition: opacity 0.16s ease, transform 0.16s ease;
+        pointer-events: none;
+      }
+
+      .skill-toggle-track::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #f8fbff;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.24);
+        transition: 0.16s ease;
+      }
+
+      .skill-toggle input:checked + .skill-toggle-track {
+        background: linear-gradient(135deg, rgba(255, 77, 77, 0.92), rgba(0, 229, 204, 0.76));
+        border-color: rgba(255, 77, 77, 0.38);
+        box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.12);
+      }
+
+      .skill-toggle input:checked + .skill-toggle-track::after {
+        transform: translateX(24px);
+      }
+
+      .skill-toggle input:disabled + .skill-toggle-track {
+        opacity: 0.56;
+      }
+
+      .skill-toggle.is-loading,
+      .skill-toggle.is-loading .skill-toggle-track {
+        cursor: progress;
+      }
+
+      .skill-toggle.is-loading .skill-toggle-track::before {
+        opacity: 1;
+        transform: scale(1);
+        animation: skill-toggle-spin 0.75s linear infinite;
+      }
+
+      .skill-toggle.is-loading .skill-toggle-track::after {
+        opacity: 0.2;
+      }
+
+      html[data-theme="light"] .skill-toggle-track {
+        background: rgba(15, 23, 42, 0.12);
+        border: 1px solid rgba(15, 23, 42, 0.08);
+      }
+
+      html[data-theme="light"] .skill-toggle-track::before {
+        border-color: rgba(15, 23, 42, 0.12);
+        border-top-color: rgba(15, 23, 42, 0.68);
+      }
+
+      @keyframes skill-toggle-spin {
+        from {
+          transform: scale(1) rotate(0deg);
+        }
+        to {
+          transform: scale(1) rotate(360deg);
+        }
+      }
+
       .tag {
         display: inline-flex;
         align-items: center;
         min-height: 26px;
-        padding: 0 10px;
+        padding: 4px 10px;
         border-radius: 999px;
         font-size: 11px;
         font-weight: 700;
+        line-height: 1.4;
+        text-align: center;
+        white-space: normal;
+        word-break: break-word;
       }
 
       .tag.ready {
@@ -487,11 +986,58 @@
         color: var(--muted);
         border: 1px dashed var(--line-strong);
         border-radius: var(--radius-lg);
-        background: rgba(255, 255, 255, 0.45);
+        background: var(--panel);
+      }
+
+      html[data-theme="light"] .empty-state {
+        background: rgba(255, 255, 255, 0.76);
+      }
+
+      .empty-state-actions {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 16px;
       }
 
       .workbench {
-        padding: 22px;
+        padding: 24px;
+      }
+
+      .workbench-modal[hidden] {
+        display: none;
+      }
+
+      .workbench-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 78;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: var(--overlay);
+        backdrop-filter: blur(6px);
+      }
+
+      .workbench-modal-panel {
+        width: min(1120px, 100%);
+        max-height: min(84vh, 960px);
+        overflow: auto;
+      }
+
+      .workbench-modal-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .workbench-modal-copy {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.7;
       }
 
       .workbench-head {
@@ -504,44 +1050,77 @@
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: var(--muted);
+        font-family: var(--font-display);
       }
 
       .workbench-head h3 {
         margin-top: 8px;
         font-size: 26px;
         line-height: 1.15;
+        font-family: var(--font-display);
       }
 
       .workbench-head p {
         margin-top: 10px;
         color: var(--muted);
         line-height: 1.7;
-        font-size: 14px;
+        font-size: 13px;
       }
 
       .workbench-section + .workbench-section {
-        margin-top: 18px;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
       }
 
       .status-banner {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
         gap: 10px;
+        flex-wrap: wrap;
         padding: 14px 16px;
         border-radius: 14px;
-        background: rgba(32, 25, 18, 0.04);
+        background: rgba(255, 255, 255, 0.04);
         border: 1px solid transparent;
       }
 
       .status-banner.good {
-        border-color: rgba(87, 99, 71, 0.16);
-        background: rgba(87, 99, 71, 0.08);
+        border-color: rgba(0, 143, 135, 0.18);
+        background: rgba(0, 143, 135, 0.08);
       }
 
       .status-banner.warn {
-        border-color: rgba(176, 63, 63, 0.16);
-        background: rgba(176, 63, 63, 0.08);
+        border-color: rgba(239, 75, 88, 0.18);
+        background: rgba(239, 75, 88, 0.08);
+      }
+
+      .inline-status {
+        display: inline-flex;
+        align-items: center;
+        min-height: 22px;
+        margin-bottom: 6px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1.35;
+      }
+
+      .inline-status.pass {
+        background: var(--olive-soft);
+        color: var(--olive);
+      }
+
+      .inline-status.pending {
+        background: var(--gold-soft);
+        color: var(--gold);
+      }
+
+      .inline-status.fix,
+      .inline-status.warn {
+        background: var(--danger-soft);
+        color: var(--danger);
       }
 
       .status-dot {
@@ -568,7 +1147,15 @@
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        margin-top: 14px;
+        margin-top: 12px;
+      }
+
+      #automation-warning[hidden] {
+        display: none;
+      }
+
+      #automation-warning {
+        margin-top: 12px;
       }
 
       .foot-note {
@@ -583,9 +1170,9 @@
         padding: 14px;
         border-radius: 14px;
         border: 1px solid var(--line);
-        background: rgba(32, 25, 18, 0.04);
+        background: rgba(255, 255, 255, 0.04);
         color: var(--text);
-        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-family: var(--font-mono);
         font-size: 12px;
         line-height: 1.7;
         white-space: pre-wrap;
@@ -608,6 +1195,7 @@
         letter-spacing: 0.06em;
         text-transform: uppercase;
         color: var(--muted);
+        font-family: var(--font-display);
       }
 
       .text-input,
@@ -615,9 +1203,15 @@
         width: 100%;
         border: 1px solid var(--line);
         border-radius: 12px;
-        background: rgba(255, 255, 255, 0.72);
+        background: var(--surface-input);
         color: var(--text);
         padding: 12px 14px;
+      }
+
+      .search-box::placeholder,
+      .text-input::placeholder,
+      .text-area::placeholder {
+        color: var(--placeholder);
       }
 
       .text-area {
@@ -633,7 +1227,7 @@
         padding: 14px;
         border-radius: 12px;
         border: 1px solid var(--line);
-        background: rgba(32, 25, 18, 0.04);
+        background: rgba(255, 255, 255, 0.04);
       }
 
       .toggle-row input[type="checkbox"] {
@@ -644,16 +1238,78 @@
       .submit-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 12px;
+      }
+
+      .config-field-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .config-field {
+        display: grid;
+        gap: 8px;
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .config-field label {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-family: var(--font-display);
+      }
+
+      .config-advanced {
+        display: grid;
+        gap: 12px;
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .config-advanced summary {
+        list-style: none;
+        cursor: pointer;
+        margin-bottom: 0;
+      }
+
+      .config-advanced summary::-webkit-details-marker {
+        display: none;
       }
 
       .notice-banner {
         padding: 12px 14px;
         border-radius: 12px;
         border: 1px solid var(--line);
-        background: rgba(32, 25, 18, 0.04);
+        background: rgba(255, 255, 255, 0.04);
         font-size: 13px;
         line-height: 1.7;
+      }
+
+      .notice-banner.neutral {
+        background: rgba(32, 25, 18, 0.04);
+      }
+
+      .notice-banner.good {
+        background: rgba(0, 143, 135, 0.08);
+        border-color: rgba(0, 143, 135, 0.18);
+      }
+
+      .notice-banner.warn {
+        background: rgba(193, 123, 17, 0.09);
+        border-color: rgba(193, 123, 17, 0.2);
+      }
+
+      .notice-banner.danger {
+        background: rgba(239, 75, 88, 0.09);
+        border-color: rgba(239, 75, 88, 0.18);
       }
 
       .file-chip-list {
@@ -666,33 +1322,1029 @@
         display: inline-flex;
         align-items: center;
         min-height: 28px;
-        padding: 0 10px;
+        padding: 4px 10px;
         border-radius: 999px;
-        background: rgba(32, 25, 18, 0.04);
+        background: rgba(255, 255, 255, 0.06);
         border: 1px solid var(--line);
+        font-size: 12px;
+        line-height: 1.4;
+        text-align: center;
+        white-space: normal;
+        word-break: break-word;
+      }
+
+      .workbench-disclosure {
+        padding-top: 0;
+      }
+
+      .workbench-disclosure summary {
+        list-style: none;
+        cursor: pointer;
+        padding-top: 2px;
+      }
+
+      .workbench-disclosure summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .workbench-disclosure[open] summary {
+        margin-bottom: 14px;
+      }
+
+      .workbench-subsection + .workbench-subsection {
+        margin-top: 14px;
+      }
+
+      .file-entry-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+        max-height: 320px;
+        overflow: auto;
+        padding-right: 4px;
+      }
+
+      .file-entry-button {
+        width: 100%;
+        display: grid;
+        gap: 6px;
+        text-align: left;
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .file-entry-button:hover {
+        border-color: var(--line-strong);
+        transform: translateY(-1px);
+      }
+
+      .file-entry-button.active {
+        border-color: rgba(255, 77, 77, 0.3);
+        background: rgba(255, 77, 77, 0.08);
+        box-shadow: inset 0 0 0 1px rgba(255, 77, 77, 0.08);
+      }
+
+      .file-entry-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        font-weight: 700;
+        font-family: var(--font-display);
+      }
+
+      .file-entry-meta {
+        font-size: 12px;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+
+      .file-entry-config {
+        font-size: 12px;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+
+      .file-editor-shell {
+        display: grid;
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .file-editor-meta {
+        font-size: 12px;
+        line-height: 1.7;
+        color: var(--muted);
+      }
+
+      .file-editor-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .code-editor {
+        min-height: 320px;
+        font-family: var(--font-mono);
+        font-size: 13px;
+        line-height: 1.7;
+        white-space: pre;
+      }
+
+      .readonly-preview {
+        min-height: 180px;
+        margin: 0;
+        white-space: pre-wrap;
+      }
+
+      .generator-shell {
+        display: grid;
+        gap: 22px;
+        padding-bottom: 140px;
+      }
+
+      .generator-layout {
+        width: 100%;
+        margin: 0;
+      }
+
+      .generator-panel {
+        padding: 24px 28px 36px;
+        padding-bottom: 36px;
+      }
+
+      .generator-input-panel {
+        min-width: 0;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .generator-stepper {
+        display: grid;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .generator-stepper-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .generator-stepper-copy {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.7;
+      }
+
+      .generator-step-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .generator-step-pill {
+        display: grid;
+        gap: 2px;
+        min-width: 0;
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+        text-align: left;
+        transition: 0.2s ease;
+      }
+
+      .generator-step-pill:hover {
+        border-color: var(--line-strong);
+        transform: translateY(-1px);
+      }
+
+      .generator-step-pill.active {
+        border-color: rgba(255, 77, 77, 0.3);
+        background: rgba(255, 77, 77, 0.1);
+      }
+
+      .generator-step-pill.complete {
+        border-color: rgba(0, 229, 204, 0.24);
+      }
+
+      .generator-step-pill-index {
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .generator-step-pill-title {
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 1.4;
+        font-family: var(--font-display);
+      }
+
+      .generator-step-pill-meta {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .generator-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        position: fixed;
+        left: 50%;
+        bottom: 18px;
+        z-index: 26;
+        width: min(1480px, calc(100vw - 36px));
+        margin-top: 24px;
+        padding: 14px;
+        transform: translateX(-50%);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: rgba(10, 15, 26, 0.86);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+      }
+
+      html[data-theme="light"] .generator-toolbar {
+        background: rgba(255, 255, 255, 0.88);
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+      }
+
+      .primary-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 48px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+        color: #fff;
+        padding: 12px 18px;
+        cursor: pointer;
+        font-weight: 700;
+        line-height: 1.45;
+        text-align: center;
+        transition: 0.2s ease;
+        font-family: var(--font-display);
+        box-shadow: 0 10px 24px rgba(239, 75, 88, 0.22);
+      }
+
+      .primary-btn:hover {
+        filter: brightness(1.03);
+        transform: translateY(-1px);
+        box-shadow: 0 16px 34px rgba(239, 75, 88, 0.28);
+      }
+
+      .primary-btn:disabled,
+      .small-btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.56;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .generator-toolbar .small-btn,
+      .submit-row .small-btn,
+      .link-row .ghost-link {
+        flex: 1 1 180px;
+      }
+
+      .generator-toolbar .primary-btn,
+      .modal-actions .primary-btn {
+        flex: 1 1 240px;
+      }
+
+      .generator-form-grid {
+        display: grid;
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .generator-group {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.04);
+        overflow: hidden;
+      }
+
+      .generator-group[open] {
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .generator-group-summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 18px 18px 14px;
+      }
+
+      .generator-group-summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .generator-group-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .generator-group-meta {
+        display: grid;
+        gap: 8px;
+      }
+
+      .generator-group-meta .section-title {
+        margin-bottom: 0;
+      }
+
+      .generator-group-desc {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .generator-group-progress {
+        flex: 0 0 auto;
+      }
+
+      .generator-group-body {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px 22px;
+        padding: 0 18px 18px;
+      }
+
+      .generator-field-hint {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .generator-field-error {
+        min-height: 18px;
+        margin-top: 6px;
+        color: var(--danger);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .generator-template-bar {
+        margin-top: 18px;
+      }
+
+      .generator-template-controls,
+      .generator-inline-row,
+      .generator-inline-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .generator-inline-row-end {
+        justify-content: space-between;
+      }
+
+      .generator-template-controls .text-input {
+        min-width: min(420px, 100%);
+        flex: 1 1 320px;
+      }
+
+      .generator-validation-summary {
+        display: grid;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .generator-validation-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .generator-validation-list {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .generator-chip-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .generator-chip-option {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        font-size: 13px;
+        cursor: pointer;
+        transition: 0.18s ease;
+      }
+
+      .generator-chip-option:hover {
+        border-color: var(--line-strong);
+        transform: translateY(-1px);
+      }
+
+      .generator-chip-option.active {
+        border-color: rgba(255, 77, 77, 0.26);
+        background: rgba(255, 77, 77, 0.12);
+        color: var(--text);
+        box-shadow: 0 10px 24px rgba(255, 77, 77, 0.12);
+      }
+
+      html[data-theme="light"] .generator-chip-option.active {
+        background: rgba(239, 75, 88, 0.08);
+      }
+
+      .generator-dynamic-panel {
+        display: grid;
+        gap: 16px;
+        grid-column: 1 / -1;
+        padding: 16px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .generator-inline-grid {
+        display: grid;
+        gap: 18px 22px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-column: 1 / -1;
+      }
+
+      .tag-input-shell {
+        display: grid;
+        gap: 10px;
+      }
+
+      .tag-input-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        min-height: 16px;
+      }
+
+      .tag-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 30px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.06);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .tag-chip button {
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
         font-size: 12px;
       }
 
-      @media (max-width: 1220px) {
-        .app-bar {
-          flex-direction: column;
-        }
+      .tag-input-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-        .app-pills {
-          justify-content: flex-start;
-        }
+      .tag-input-row .text-input {
+        flex: 1 1 auto;
+      }
 
-        .overview-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+      .step-list,
+      .branch-list {
+        display: grid;
+        gap: 12px;
+      }
 
+      .step-card,
+      .branch-card {
+        display: grid;
+        gap: 10px;
+        padding: 14px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .step-card-head,
+      .branch-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .step-card-actions,
+      .branch-card-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .step-card-index,
+      .branch-card-index {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .generator-suggestion-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .generator-suggestion-list:empty {
+        display: none;
+      }
+
+      .generator-suggestion-btn {
+        border: 1px dashed var(--line-strong);
+        background: transparent;
+        color: var(--muted);
+        padding: 6px 12px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+
+      .generator-suggestion-btn:hover {
+        color: var(--text);
+        border-color: rgba(255, 77, 77, 0.28);
+      }
+
+      .generator-form-grid .config-group.wide,
+      .generator-group-body .config-group.wide {
+        grid-column: 1 / -1;
+      }
+
+      .generator-preview-modal[hidden] {
+        display: none;
+      }
+
+      .generator-preview-modal,
+      .generator-material-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 80;
+        display: grid;
+        place-items: center;
+        padding: 16px;
+        background: var(--overlay);
+        backdrop-filter: blur(6px);
+        overflow: auto;
+      }
+
+      .generator-material-modal {
+        z-index: 84;
+      }
+
+      .generator-preview-panel,
+      .generator-material-panel {
+        width: min(960px, 100%);
+        height: min(820px, calc(100dvh - 48px));
+        max-height: min(820px, calc(100dvh - 48px));
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 18px 18px max(18px, calc(14px + env(safe-area-inset-bottom, 0px)));
+        overflow: hidden;
+        border-radius: 22px;
+        background: var(--panel-strong);
+        border: 1px solid var(--line);
+        box-shadow: 0 28px 72px rgba(15, 23, 42, 0.18);
+      }
+
+      .generator-preview-body {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: auto;
+        padding-right: 4px;
+        padding-bottom: 8px;
+      }
+
+      .generator-preview-body .code-block {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      .generator-material-panel {
+        width: min(760px, 100%);
+      }
+
+      .generator-material-body {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: auto;
+        display: grid;
+        gap: 14px;
+        padding-right: 4px;
+      }
+
+      .generator-material-render {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.04);
+        min-height: 220px;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+
+      .generator-material-render img,
+      .generator-material-render iframe {
+        width: 100%;
+        height: min(56vh, 540px);
+        border: 0;
+        display: block;
+      }
+
+      .generator-material-render pre {
+        width: 100%;
+        margin: 0;
+        padding: 18px;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .generator-preview-section {
+        display: grid;
+        gap: 12px;
+      }
+
+      .generator-preview-copy {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.7;
+      }
+
+      .generator-preview-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .generator-preview-head h3 {
+        margin-top: 8px;
+        font-size: 28px;
+        line-height: 1.15;
+        font-family: var(--font-display);
+      }
+
+      .modal-close-btn {
+        flex: 0 0 auto;
+      }
+
+      .modal-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        margin-top: auto;
+        min-height: 72px;
+        padding-top: 12px;
+        padding-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+        border-top: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(10, 15, 26, 0.24) 0%, rgba(10, 15, 26, 0.94) 30%);
+        position: relative;
+        flex: 0 0 auto;
+        overflow: visible;
+      }
+
+      .modal-actions .small-btn,
+      .modal-actions .primary-btn {
+        min-height: 42px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+
+      html[data-theme="light"] .modal-actions {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 1) 26%);
+      }
+
+      body.modal-open {
+        overflow: hidden;
+      }
+
+      .generator-material-composer {
+        display: grid;
+        grid-template-columns: minmax(130px, 160px) minmax(0, 1fr);
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .generator-material-composer.advanced {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .generator-material-mode-preview {
+        grid-column: 1 / -1;
+      }
+
+      .generator-material-composer .wide {
+        grid-column: 1 / -1;
+      }
+
+      .material-card-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .material-card {
+        display: grid;
+        gap: 6px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .material-card-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .material-card-meta {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .material-card-value {
+        font-size: 12px;
+        line-height: 1.6;
+        word-break: break-word;
+      }
+
+      .generator-material-preview {
+        display: grid;
+        gap: 12px;
+      }
+
+      .generator-material-preview[hidden] {
+        display: none;
+      }
+
+      .generator-material-preview-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .generator-material-preview-summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .generator-material-preview-note {
+        font-size: 12px;
+        line-height: 1.7;
+        color: var(--muted);
+      }
+
+      .generator-material-preview-list {
+        display: grid;
+        gap: 10px;
+        max-height: 220px;
+        overflow: auto;
+        padding-right: 4px;
+      }
+
+      .generator-material-preview-list.compact {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .material-card-button {
+        width: 100%;
+        display: grid;
+        gap: 6px;
+        text-align: left;
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .material-card-button:hover {
+        border-color: var(--line-strong);
+        transform: translateY(-1px);
+      }
+
+      .generator-material-inline-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 6px;
+      }
+
+      .generator-block-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .generator-block-card {
+        display: grid;
+        gap: 12px;
+        padding: 16px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .generator-block-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .generator-block-title-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .generator-block-title {
+        font-size: 16px;
+        line-height: 1.4;
+        font-family: var(--font-display);
+        font-weight: 700;
+      }
+
+      .generator-block-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .generator-block-status {
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(255, 77, 77, 0.12);
+        color: var(--danger);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .generator-block-body {
+        display: grid;
+        gap: 10px;
+      }
+
+      .generator-block-content {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .generator-block-editor {
+        min-height: 200px;
+        font-family: var(--font-mono);
+      }
+
+      .generator-block-card[data-collapsed="true"] .generator-block-body {
+        display: none;
+      }
+
+      .generator-status.neutral {
+        background: rgba(32, 25, 18, 0.04);
+      }
+
+      .generator-status.good {
+        background: rgba(87, 99, 71, 0.08);
+        border-color: rgba(87, 99, 71, 0.16);
+      }
+
+      .generator-status.warn {
+        background: rgba(170, 122, 23, 0.08);
+        border-color: rgba(170, 122, 23, 0.18);
+      }
+
+      .generator-status.danger {
+        background: rgba(176, 63, 63, 0.08);
+        border-color: rgba(176, 63, 63, 0.16);
+      }
+
+      html[data-theme="light"] .meta-item,
+      html[data-theme="light"] .detail-item,
+      html[data-theme="light"] .flow-item,
+      html[data-theme="light"] .requirement-item,
+      html[data-theme="light"] .task-item,
+      html[data-theme="light"] .toggle-row,
+      html[data-theme="light"] .config-field,
+      html[data-theme="light"] .config-advanced,
+      html[data-theme="light"] .notice-banner,
+      html[data-theme="light"] .code-block,
+      html[data-theme="light"] .file-chip,
+      html[data-theme="light"] .material-card,
+      html[data-theme="light"] .material-card-button,
+      html[data-theme="light"] .generator-material-render,
+      html[data-theme="light"] .generator-group,
+      html[data-theme="light"] .generator-group[open],
+      html[data-theme="light"] .file-entry-button,
+      html[data-theme="light"] .generator-step-pill {
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      html[data-theme="light"] .generator-step-pill.active,
+      html[data-theme="light"] .file-entry-button.active {
+        background: rgba(239, 75, 88, 0.08);
+      }
+
+      .skill-toggle-notice {
+        position: fixed;
+        top: 110px;
+        right: 24px;
+        z-index: 96;
+        min-width: 240px;
+        max-width: min(380px, calc(100vw - 32px));
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: var(--panel-strong);
+        color: var(--text);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(12px);
+      }
+
+      .skill-toggle-notice.good {
+        border-color: rgba(0, 229, 204, 0.28);
+      }
+
+      .skill-toggle-notice.neutral {
+        border-color: var(--line);
+      }
+
+      .skill-toggle-notice.danger {
+        border-color: rgba(255, 77, 77, 0.28);
+      }
+
+      @media (max-width: 1180px) {
         .dashboard-wrapper {
           grid-template-columns: 1fr;
         }
 
-        .sidebar-nav,
-        .workbench {
-          position: static;
+        .generator-layout {
+          width: 100%;
+        }
+
+        .skill-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 1220px) {
+        .top-shell {
+          position: sticky;
+          top: 0;
+        }
+
+        .app-bar {
+          grid-template-columns: 1fr;
+        }
+
+        .app-actions {
+          justify-content: flex-start;
+        }
+
+        .dashboard-wrapper {
+          grid-template-columns: 1fr;
         }
       }
 
@@ -701,8 +2353,10 @@
           padding: 20px 16px 40px;
         }
 
-        .overview-grid {
-          grid-template-columns: 1fr;
+        .top-shell {
+          gap: 12px;
+          margin-bottom: 16px;
+          padding-top: 6px;
         }
 
         .skill-header {
@@ -711,708 +2365,670 @@
         }
 
         .skill-toolbar {
-          justify-content: flex-start;
+          width: 100%;
+          grid-template-columns: 1fr;
+          justify-content: stretch;
         }
 
         .skill-grid {
           grid-template-columns: 1fr;
+        }
+
+        .generator-form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .generator-step-list {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+
+        .generator-group-body,
+        .generator-material-composer,
+        .generator-inline-grid,
+        .config-field-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .tag-input-row,
+        .generator-template-controls,
+        .generator-inline-row {
+          align-items: stretch;
+        }
+
+        .view-tab,
+        .primary-btn,
+        .generator-toolbar .small-btn,
+        .modal-actions .small-btn,
+        .modal-actions .primary-btn,
+        .submit-row .small-btn,
+        .link-row .ghost-link {
+          flex-basis: 100%;
+        }
+
+        .generator-toolbar {
+          width: calc(100vw - 24px);
+          bottom: 12px;
+          padding: 12px;
+        }
+
+        .skill-toggle-notice {
+          top: 92px;
+          right: 12px;
+        }
+
+        .generator-preview-modal {
+          padding: 12px;
+        }
+
+        .generator-preview-panel,
+        .generator-material-panel {
+          height: calc(100dvh - 24px);
+          max-height: calc(100dvh - 24px);
+          padding: 16px 16px max(16px, calc(12px + env(safe-area-inset-bottom, 0px)));
+        }
+
+        .workbench-modal {
+          padding: 12px;
         }
       }
     </style>
   </head>
   <body>
     <div class="shell">
-      <header class="app-bar panel">
-        <div class="app-brand">
-          <div class="brand-mark">OC</div>
-          <div>
-            <div class="brand-eyebrow">OpenClaw Desktop Client</div>
-            <h1>技能可视化配置客户端</h1>
-            <p class="app-desc">
-              这里不是官网式网页，而是一块围绕本地 OpenClaw skills 的客户端工作台。
-              你可以在一个窗口里完成 skill 浏览、结构查看、缺失依赖排查和手动配置写回。
-            </p>
-          </div>
-        </div>
-        <div class="app-pills">
-          <span class="pill" id="pill-client">客户端环境识别中</span>
-          <span class="pill" id="pill-runtime">本地数据接口连接中</span>
-          <span class="pill" id="pill-skills">Skill 清单加载中</span>
-          <span class="pill" id="pill-config">配置文件读取中</span>
-        </div>
-      </header>
-
-      <section class="overview-grid">
-        <article class="overview-card">
-          <div class="overview-label">Skill 总量</div>
-          <div class="overview-value" id="overview-total">--</div>
-          <div class="overview-meta">
-            <div id="overview-total-meta">正在读取本地 Skill 列表</div>
-            <div id="overview-ready-meta">已就绪数量统计中</div>
-          </div>
-        </article>
-
-        <article class="overview-card">
-          <div class="overview-label">来源结构</div>
-          <div class="overview-value" id="overview-source">--</div>
-          <div class="overview-meta">
-            <div id="overview-personal-meta">个人技能统计中</div>
-            <div id="overview-bundled-meta">内置技能统计中</div>
-          </div>
-        </article>
-
-        <article class="overview-card">
-          <div class="overview-label">手动配置</div>
-          <div class="overview-value" id="overview-configured">--</div>
-          <div class="overview-meta">
-            <div id="overview-config-meta">已存在配置项统计中</div>
-            <div id="overview-blocked-meta">待配置统计中</div>
-          </div>
-        </article>
-
-        <article class="overview-card">
-          <div class="overview-label">本地路径</div>
-          <div class="overview-value" id="overview-path">--</div>
-          <div class="overview-meta">
-            <div id="overview-config-path">配置文件读取中</div>
-            <div id="overview-workspace-path">工作区路径读取中</div>
-          </div>
-        </article>
-      </section>
-
-      <section class="dashboard-wrapper">
-        <aside class="panel sidebar-nav">
-          <div class="section-title">筛选 Skill</div>
-          <input id="search-box" class="search-box" type="text" placeholder="搜索 skill 名称、描述或来源" />
-          <div class="filter-list" id="filter-list"></div>
-
-          <div class="meta-block">
-            <div class="section-title">本地路径</div>
-            <div class="path-list">
-              <div class="meta-item"><strong>配置文件</strong><span id="path-config">加载中</span></div>
-              <div class="meta-item"><strong>技能目录</strong><span id="path-skills">加载中</span></div>
-              <div class="meta-item"><strong>内置目录</strong><span id="path-bundled">加载中</span></div>
-              <div class="meta-item"><strong>工作区</strong><span id="path-workspace">加载中</span></div>
-              <div class="meta-item"><strong>状态目录</strong><span id="path-state">加载中</span></div>
+      <div class="top-shell">
+        <header class="app-bar panel">
+          <div class="app-brand">
+            <div class="brand-mark" id="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 120 120" fill="none" role="img" aria-label="ClawForge lobster mark" xmlns="http://www.w3.org/2000/svg">
+                <path d="M60 10 C30 10 15 35 15 55 C15 75 30 95 45 100 L45 110 L55 110 L55 100 C55 100 60 102 65 100 L65 110 L75 110 L75 100 C90 95 105 75 105 55 C105 35 90 10 60 10Z" fill="url(#lobster-gradient)" class="claw-body"></path>
+                <path d="M20 45 C5 40 0 50 5 60 C10 70 20 65 25 55 C28 48 25 45 20 45Z" fill="url(#lobster-gradient)" class="claw-left"></path>
+                <path d="M100 45 C115 40 120 50 115 60 C110 70 100 65 95 55 C92 48 95 45 100 45Z" fill="url(#lobster-gradient)" class="claw-right"></path>
+                <path d="M45 15 Q35 5 30 8" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" class="antenna"></path>
+                <path d="M75 15 Q85 5 90 8" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" class="antenna"></path>
+                <circle cx="45" cy="35" r="6" fill="#050810" class="eye"></circle>
+                <circle cx="75" cy="35" r="6" fill="#050810" class="eye"></circle>
+                <circle cx="46" cy="34" r="2" fill="var(--cyan)" class="eye-glow"></circle>
+                <circle cx="76" cy="34" r="2" fill="var(--cyan)" class="eye-glow"></circle>
+                <defs>
+                  <linearGradient id="lobster-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="var(--accent)"></stop>
+                    <stop offset="100%" stop-color="var(--accent-strong)"></stop>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div>
+              <h1 id="app-title">ClawForge</h1>
+              <p class="app-desc" id="app-subtitle">查看、配置并生成 OpenClaw Skill</p>
             </div>
           </div>
-
-          <div class="meta-block">
-            <div class="section-title">这页重点</div>
-            <div class="status-list">
-              <div class="meta-item"><strong>技能来源</strong>先分清个人技能和内置技能，再决定展示优先级。</div>
-              <div class="meta-item"><strong>运行条件</strong>直观看到每个 skill 缺什么 CLI、环境变量或配置项。</div>
-              <div class="meta-item"><strong>手动配置</strong>右侧直接编辑 <code>skills.entries.&lt;skillKey&gt;</code>，保存到本地配置文件。</div>
-            </div>
+          <div class="app-actions">
+            <button class="theme-toggle" id="theme-toggle-btn" type="button" aria-label="Switch to light mode" title="Switch to light mode">
+              <span class="theme-toggle-icon" id="theme-toggle-icon" aria-hidden="true">☀</span>
+            </button>
+            <button class="small-btn" id="language-toggle-btn" type="button">EN</button>
+            <a class="primary-btn" id="top-control-link" href="http://127.0.0.1:18789/" target="_blank" rel="noreferrer">打开 OpenClaw</a>
           </div>
-        </aside>
+        </header>
 
-        <main class="skill-center">
-          <div class="panel skill-stage">
+        <section class="panel view-tabs" id="view-tabs"></section>
+      </div>
+
+      <div id="library-view" class="library-page" hidden>
+        <section class="panel library-rail">
+          <div class="library-controls">
+            <input id="search-box" class="search-box" type="text" placeholder="搜索名称、Skill Key 或描述" />
+            <div class="filter-list" id="filter-list"></div>
+          </div>
+
+          <div class="notice-banner">
+            读取范围：这里只读取 OpenClaw 当前能识别到的 Skill 清单，并按名称、Skill Key、描述做检索。不会把普通文件、路径名或任务名当成 Skill 条目。
+          </div>
+        </section>
+
+        <section class="dashboard-wrapper">
+          <main class="skill-center">
+            <div class="panel skill-stage library-list-panel">
+              <div class="skill-header" hidden>
+                <div>
+                  <div class="section-title">Skill 库</div>
+                  <h2 id="skill-title">正在读取本地 Skill</h2>
+                  <p class="skill-subtitle" id="skill-subtitle">先找到目标 Skill。需要看结构、文件和配置时，再点开下钻工作台。</p>
+                </div>
+                <div class="skill-toolbar">
+                  <label class="sort-field">
+                    <span>排序</span>
+                    <select class="text-input sort-select" id="sort-select"></select>
+                  </label>
+                  <div class="toolbar-actions">
+                    <button class="small-btn" id="refresh-btn" type="button">刷新数据</button>
+                  </div>
+                  <span class="refresh-state" id="refresh-state">尚未加载</span>
+                </div>
+              </div>
+              <div class="skill-grid" id="skill-grid"></div>
+              <div class="empty-state" id="empty-state" hidden>当前筛选条件下没有匹配的 Skill。</div>
+            </div>
+          </main>
+        </section>
+
+        <div class="workbench-modal" id="workbench-modal" hidden>
+          <div class="panel workbench workbench-modal-panel">
+            <div class="workbench-modal-head">
+              <div>
+                <div class="workbench-title">Skill 工作台</div>
+                <div class="workbench-modal-copy">点击 Skill 后，通过这里下钻查看结构、文件说明和可编辑内容。</div>
+              </div>
+              <button class="small-btn" id="workbench-modal-close-btn" type="button">关闭</button>
+            </div>
+
+            <div class="workbench-head">
+              <h3 id="workbench-title">等待选择 Skill</h3>
+              <p id="workbench-desc">这里只围绕这个 Skill 的文件结构来工作。点一个文件，就能看它的作用、配置项和当前内容，也能直接手动修改文本文件。</p>
+            </div>
+
+            <section class="workbench-section">
+              <div class="section-title">结构与文件</div>
+              <div id="runtime-banner" class="status-banner warn">
+                <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                  <span class="status-dot"></span>
+                  <div id="runtime-banner-text">正在读取当前 Skill 的文件结构</div>
+                </div>
+                <div class="muted" id="runtime-banner-side">--</div>
+              </div>
+              <div class="notice-banner" id="automation-warning">选择一个 Skill 后，这里会列出它的目录结构、每个文件的作用，以及可见的配置项。</div>
+              <div class="file-entry-list" id="file-entry-list">
+                <button class="file-entry-button" type="button">
+                  <span class="file-entry-title">等待选择 Skill</span>
+                  <span class="file-entry-meta">先从右侧点一个 Skill，再在这里看文件结构。</span>
+                </button>
+              </div>
+              <div class="detail-list" id="detail-list" style="margin-top:12px;">
+                <div class="detail-item"><strong>文件数量</strong>选中 Skill 后显示目录结构数量。</div>
+                <div class="detail-item"><strong>编辑能力</strong>文本文件可直接改，图片、PDF 等素材文件会以只读方式展示。</div>
+              </div>
+            </section>
+
+            <section class="workbench-section">
+              <div class="section-title">当前文件说明</div>
+              <div class="notice-banner" id="file-meaning-banner">这里会解释当前文件的作用，以及它通常承担哪些配置职责。</div>
+              <div class="detail-list" id="health-list">
+                <div class="detail-item"><strong>文件说明</strong>选择一个文件后，这里会解释它是做什么的。</div>
+              </div>
+              <div class="requirement-list" id="requirement-list" style="margin-top:12px;">
+                <div class="requirement-item"><strong>配置提示</strong>如果这个文件包含 frontmatter、JSON、YAML 或环境变量字段，这里会列出能识别到的配置项。</div>
+              </div>
+            </section>
+
+            <section class="workbench-section">
+              <div class="section-title">手动编辑当前文件</div>
+              <div class="notice-banner" id="file-editor-notice">选择一个可编辑文件后，可以直接在这里修改并保存。</div>
+              <div class="file-editor-shell">
+                <div class="file-editor-meta" id="file-editor-meta">当前还没有选中文件。</div>
+                <form id="file-editor-form">
+                  <div class="file-editor-actions">
+                    <button class="small-btn" id="reload-file-btn" type="button">重新读取</button>
+                    <button class="small-btn" id="save-file-btn" type="submit">保存当前文件</button>
+                  </div>
+                  <textarea class="text-area code-editor" id="file-editor-content" placeholder="选中一个文本文件后，这里会显示它的内容。"></textarea>
+                </form>
+                <pre class="code-block readonly-preview" id="file-editor-readonly" hidden>当前文件不适合直接编辑，这里会显示只读说明。</pre>
+              </div>
+            </section>
+
+            <section class="workbench-section" hidden aria-hidden="true">
+              <div class="section-title">旧版本地配置表单</div>
+              <div class="notice-banner" id="config-notice">右侧表单会直接写回 <code>~/.openclaw/openclaw.json</code> 的 <code>skills.entries.&lt;skillKey&gt;</code>。</div>
+              <form class="config-form" id="config-form">
+                <div class="submit-row workbench-actions">
+                  <button class="small-btn" id="save-config-btn" type="submit">保存到本地配置</button>
+                  <button class="small-btn" id="reload-config-btn" type="button">恢复磁盘内容</button>
+                </div>
+
+                <div class="toggle-row">
+                  <div>
+                    <strong>启用这个 Skill</strong>
+                    <div class="foot-note" style="margin-top:4px;">关闭后会在手动配置层面禁用当前技能。</div>
+                  </div>
+                  <input id="config-enabled" name="enabled" type="checkbox" />
+                </div>
+
+                <div class="config-group" id="primary-env-group" hidden>
+                  <label for="config-api-key" id="primary-env-label">主密钥</label>
+                  <input class="text-input" id="config-api-key" name="apiKey" type="text" placeholder="输入主密钥" />
+                </div>
+
+                <div class="config-group" id="common-config-group" hidden>
+                  <div class="section-title">常用字段</div>
+                  <div class="config-field-grid" id="common-config-fields"></div>
+                </div>
+
+                <details class="config-advanced">
+                  <summary class="section-title">展开高级配置</summary>
+                  <div class="config-group">
+                    <label for="config-env-json">环境变量 JSON</label>
+                    <textarea class="text-area" id="config-env-json" name="envJson" placeholder='{"KEY":"value"}'></textarea>
+                  </div>
+
+                  <div class="config-group">
+                    <label for="config-json">配置项 JSON</label>
+                    <textarea class="text-area" id="config-json" name="configJson" placeholder='{"timeout":"120"}'></textarea>
+                  </div>
+
+                  <div class="notice-banner neutral" id="config-validation-banner">选择一个 Skill 后，这里会先检查 JSON 格式、关键字段变更和保存风险。</div>
+                  <div class="detail-list" id="config-risk-list">
+                    <div class="detail-item"><strong>风险提醒</strong>这里会提示定时任务影响和关键字段风险。</div>
+                  </div>
+                  <div class="detail-list" id="config-diff-list">
+                    <div class="detail-item"><strong>配置变更</strong>这里会对比当前表单和磁盘里的配置差异。</div>
+                  </div>
+                </details>
+              </form>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <section class="generator-shell" id="generator-view">
+        <div class="generator-layout">
+          <section class="panel generator-panel generator-input-panel">
             <div class="skill-header">
               <div>
-                <div class="section-title">Skill 库</div>
-                <h2 id="skill-title">正在读取本地 Skill</h2>
-                <p class="skill-subtitle" id="skill-subtitle">先看本机真实的 skill 清单，再在右侧看结构、缺失依赖和手动配置。</p>
-              </div>
-              <div class="skill-toolbar">
-                <button class="small-btn" id="refresh-btn" type="button">刷新数据</button>
-                <a class="ghost-link" id="control-link" href="http://127.0.0.1:18789/" target="_blank" rel="noreferrer">打开 OpenClaw 控制台</a>
-                <span class="refresh-state" id="refresh-state">尚未加载</span>
+                <h2>把一个重复场景整理成可发送给 OpenClaw 的 Skill 指令</h2>
+                <p class="skill-subtitle">
+                  采用三步式填写：先定义场景与触发，再补输入输出与流程，最后补约束与参考材料。
+                </p>
               </div>
             </div>
-            <div class="skill-grid" id="skill-grid"></div>
-            <div class="empty-state" id="empty-state" hidden>当前筛选条件下没有匹配的 Skill。</div>
-          </div>
-        </main>
 
-        <aside class="panel workbench">
-          <div class="workbench-head">
-            <div class="workbench-title">右侧工作台</div>
-            <h3 id="workbench-title">等待选择 Skill</h3>
-            <p id="workbench-desc">点击中间任意 Skill 卡片，这里会显示真实来源、文件结构、缺失依赖和可保存的本地手动配置。</p>
-          </div>
-
-          <section class="workbench-section">
-            <div class="section-title">当前状态</div>
-            <div id="runtime-banner" class="status-banner warn">
-              <div style="display:flex;align-items:center;gap:10px;min-width:0;">
-                <span class="status-dot"></span>
-                <div id="runtime-banner-text">正在检查当前 Skill 状态</div>
-              </div>
-              <div class="muted" id="runtime-banner-side">--</div>
-            </div>
-            <div class="link-row">
-              <a class="ghost-link" id="dashboard-url-link" href="http://127.0.0.1:18789/" target="_blank" rel="noreferrer">打开 OpenClaw 控制台</a>
-            </div>
-          </section>
-
-          <section class="workbench-section">
-            <div class="section-title">当前 Skill</div>
-            <div class="detail-list" id="detail-list">
-              <div class="detail-item"><strong>状态</strong>选择一个 Skill 后显示。</div>
-              <div class="detail-item"><strong>来源</strong>会告诉你它是个人技能还是 OpenClaw 内置技能。</div>
-              <div class="detail-item"><strong>配置</strong>会显示当前是否已经有手动 entries。</div>
-            </div>
-          </section>
-
-          <section class="workbench-section">
-            <div class="section-title">结构快照</div>
-            <div class="file-chip-list" id="file-list">
-              <span class="file-chip">选择一个 Skill 后显示文件结构</span>
-            </div>
-          </section>
-
-          <section class="workbench-section">
-            <div class="section-title">依赖与修复建议</div>
-            <div class="requirement-list" id="requirement-list">
-              <div class="requirement-item"><strong>建议</strong>如果一个 Skill 显示“待补依赖”，优先补 CLI 或配置项，而不是先改页面。</div>
-            </div>
-          </section>
-
-          <section class="workbench-section">
-            <div class="section-title">手动配置</div>
-            <div class="notice-banner" id="config-notice">右侧表单会直接写回 <code>~/.openclaw/openclaw.json</code> 的 <code>skills.entries.&lt;skillKey&gt;</code>。</div>
-            <form class="config-form" id="config-form">
-              <div class="toggle-row">
-                <div>
-                  <strong>启用这个 Skill</strong>
-                  <div class="foot-note" style="margin-top:4px;">关闭后会在手动配置层面禁用当前技能。</div>
+            <section class="generator-template-bar">
+              <div class="config-group">
+                <label for="generator-template-select">选择模板</label>
+                <div class="generator-template-controls">
+                  <select class="text-input" id="generator-template-select"></select>
+                  <button class="small-btn" id="generator-template-clear-btn" type="button">回到空白</button>
                 </div>
-                <input id="config-enabled" name="enabled" type="checkbox" />
+                <div class="generator-field-hint" id="generator-template-description">可以从空白开始，也可以直接套用高频模板。</div>
               </div>
+            </section>
 
-              <div class="config-group" id="primary-env-group" hidden>
-                <label for="config-api-key" id="primary-env-label">主密钥</label>
-                <input class="text-input" id="config-api-key" name="apiKey" type="text" placeholder="输入主密钥" />
+            <div class="notice-banner neutral generator-validation-summary" id="generator-validation-summary" hidden>
+              <div class="generator-validation-head">
+                <strong id="generator-validation-title">生成前建议先补齐这些信息</strong>
+                <span class="file-chip" id="generator-validation-count">0</span>
               </div>
+              <ul class="generator-validation-list" id="generator-validation-list"></ul>
+            </div>
 
-              <div class="config-group">
-                <label for="config-env-json">环境变量 JSON</label>
-                <textarea class="text-area" id="config-env-json" name="envJson" placeholder='{"KEY":"value"}'></textarea>
+            <section class="generator-stepper" aria-label="Skill 生成步骤">
+              <div class="generator-stepper-head">
+                <div class="generator-stepper-copy">先用模板或空白开始，再按三个步骤逐步填写。只有到最后一步才显示“生成”。</div>
               </div>
+              <div class="generator-step-list" id="generator-step-list"></div>
+            </section>
 
-              <div class="config-group">
-                <label for="config-json">配置项 JSON</label>
-                <textarea class="text-area" id="config-json" name="configJson" placeholder='{"timeout":"120"}'></textarea>
-              </div>
+            <form class="generator-form-grid" id="generator-form">
+              <section class="generator-group" data-generator-group="definition">
+                <div class="generator-group-summary">
+                  <div class="generator-group-head">
+                    <div class="generator-group-meta">
+                      <div class="section-title">A. 场景与触发</div>
+                      <div class="generator-group-desc">先讲清楚这是什么场景、什么时候触发、最终想要什么结果。</div>
+                    </div>
+                    <span class="file-chip generator-group-progress" data-generator-progress="definition">0/6</span>
+                  </div>
+                </div>
+                <div class="generator-group-body">
+                  <div class="config-group wide">
+                    <label for="gen-scenario-name">Skill 场景名称</label>
+                    <div class="generator-inline-row">
+                      <input class="text-input" id="gen-scenario-name" type="text" placeholder="例如：会议纪要与行动项提炼" />
+                      <button class="small-btn" id="generator-suggest-name-btn" type="button">智能命名建议</button>
+                    </div>
+                    <div class="generator-field-hint">建议用“对象 + 动作 + 结果”命名，例如：会议纪要与行动项提炼。</div>
+                    <div class="generator-suggestion-list" id="generator-name-suggestions"></div>
+                    <div class="generator-field-error" id="gen-scenario-name-error"></div>
+                  </div>
 
-              <div class="submit-row">
-                <button class="small-btn" id="save-config-btn" type="submit">保存到本地配置</button>
-                <button class="small-btn" id="reload-config-btn" type="button">恢复磁盘内容</button>
-              </div>
+                  <div class="config-group wide">
+                    <label for="gen-use-when">什么时候会用到这个 Skill？</label>
+                    <textarea class="text-area" id="gen-use-when" placeholder="例如：每次拿到会议转写稿，需要自动整理成纪要时。"></textarea>
+                    <div class="generator-field-hint">描述真实使用时机，不要写岗位背景。</div>
+                    <div class="generator-field-error" id="gen-use-when-error"></div>
+                  </div>
+
+                  <div class="config-group wide">
+                    <label for="gen-user-says">用户通常会怎么说？</label>
+                    <textarea class="text-area" id="gen-user-says" placeholder="例如：帮我整理这段会议记录&#10;提炼行动项&#10;输出纪要"></textarea>
+                    <div class="generator-field-hint">一行一句常见说法，后续会参与触发策略和 Prompt 生成。</div>
+                    <div class="generator-field-error" id="gen-user-says-error"></div>
+                  </div>
+
+                  <div class="config-group wide">
+                    <label>触发方式</label>
+                    <div class="generator-chip-group" id="generator-trigger-mode-list"></div>
+                    <div class="generator-field-hint">可以配置自动触发、关键词触发、Slash Command 或工具直达触发。</div>
+                  </div>
+
+                  <div class="config-group wide">
+                    <label for="gen-trigger-description">触发说明</label>
+                    <textarea class="text-area" id="gen-trigger-description" placeholder="例如：当用户要求整理会议纪要、提炼行动项、总结会议内容时触发。"></textarea>
+                    <div class="generator-field-hint">用自然语言描述什么情况下应该触发该 Skill。</div>
+                    <div class="generator-field-error" id="gen-trigger-description-error"></div>
+                  </div>
+
+                  <div class="generator-dynamic-panel" id="generator-keyword-config" hidden>
+                    <div class="config-group wide">
+                      <label>触发关键词</label>
+                      <div class="tag-input-shell">
+                        <div class="tag-input-list" id="gen-trigger-keyword-list"></div>
+                        <div class="tag-input-row">
+                          <input class="text-input" id="gen-trigger-keyword-input" type="text" placeholder="输入关键词后回车，例如：纪要" />
+                          <button class="small-btn" id="gen-trigger-keyword-add" type="button">添加</button>
+                        </div>
+                      </div>
+                      <div class="generator-field-error" id="gen-trigger-keywords-error"></div>
+                    </div>
+
+                    <div class="config-group wide">
+                      <label>排除关键词</label>
+                      <div class="tag-input-shell">
+                        <div class="tag-input-list" id="gen-trigger-exclude-list"></div>
+                        <div class="tag-input-row">
+                          <input class="text-input" id="gen-trigger-exclude-input" type="text" placeholder="输入排除词后回车，例如：闲聊" />
+                          <button class="small-btn" id="gen-trigger-exclude-add" type="button">添加</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="generator-inline-grid">
+                      <div class="config-group">
+                        <label for="gen-trigger-keyword-rule">命中规则</label>
+                        <select class="text-input" id="gen-trigger-keyword-rule"></select>
+                      </div>
+                      <div class="config-group">
+                        <label for="gen-trigger-post-action">触发后动作</label>
+                        <select class="text-input" id="gen-trigger-post-action"></select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="generator-dynamic-panel" id="generator-command-config" hidden>
+                    <div class="generator-inline-grid">
+                      <div class="config-group">
+                        <label for="gen-trigger-command-name">命令名</label>
+                        <input class="text-input" id="gen-trigger-command-name" type="text" placeholder="例如：/meeting-notes" />
+                        <div class="generator-field-error" id="gen-trigger-command-name-error"></div>
+                      </div>
+                      <div class="config-group">
+                        <label>命令别名</label>
+                        <div class="tag-input-shell">
+                          <div class="tag-input-list" id="gen-trigger-command-alias-list"></div>
+                          <div class="tag-input-row">
+                            <input class="text-input" id="gen-trigger-command-alias-input" type="text" placeholder="输入别名后回车" />
+                            <button class="small-btn" id="gen-trigger-command-alias-add" type="button">添加</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="config-group wide">
+                      <label for="gen-trigger-command-description">命令说明</label>
+                      <textarea class="text-area" id="gen-trigger-command-description" placeholder="例如：根据输入材料整理会议纪要并提炼行动项。"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="config-group wide">
+                    <label>模型调用策略</label>
+                    <div class="generator-chip-group" id="generator-model-invocation-list"></div>
+                    <div class="generator-field-hint">如果只允许显式调用，最终 Prompt 和命令建议里会体现这一点。</div>
+                  </div>
+
+                  <div class="config-group wide">
+                    <label for="gen-scenario-goal">最终想要的结果</label>
+                    <textarea class="text-area" id="gen-scenario-goal" placeholder="例如：输出结构化会议纪要，包含行动项、责任人、截止时间和待确认事项。"></textarea>
+                    <div class="generator-field-hint">只写最终交付物，不写过程。</div>
+                    <div class="generator-field-error" id="gen-scenario-goal-error"></div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="generator-group" data-generator-group="execution" hidden>
+                <div class="generator-group-summary">
+                  <div class="generator-group-head">
+                    <div class="generator-group-meta">
+                      <div class="section-title">B. 输入、输出与流程</div>
+                      <div class="generator-group-desc">把输入类型、输出要求、验收标准和流程步骤写清楚。</div>
+                    </div>
+                    <span class="file-chip generator-group-progress" data-generator-progress="execution">0/8</span>
+                  </div>
+                </div>
+                <div class="generator-group-body">
+                  <div class="config-group wide">
+                    <label>输入类型</label>
+                    <div class="generator-chip-group" id="generator-input-type-list"></div>
+                    <div class="generator-field-error" id="gen-input-types-error"></div>
+                  </div>
+
+                  <div class="config-group wide">
+                    <label for="gen-inputs">输入里通常会包含什么</label>
+                    <textarea class="text-area" id="gen-inputs" placeholder="例如：会议转写稿、Excel 表格、PRD 文档、聊天记录。"></textarea>
+                    <div class="generator-field-hint">这里写输入里通常会有什么，而不是具体哪一份文件。</div>
+                    <div class="generator-field-error" id="gen-inputs-error"></div>
+                  </div>
+
+                  <div class="config-group wide">
+                    <label>输出类型</label>
+                    <div class="generator-chip-group" id="generator-output-type-list"></div>
+                    <div class="generator-field-error" id="gen-output-types-error"></div>
+                  </div>
+
+                  <div class="generator-inline-grid">
+                    <div class="config-group wide">
+                      <label for="gen-output-desc">输出内容说明</label>
+                      <textarea class="text-area" id="gen-output-desc" placeholder="例如：结构化纪要、行动项清单、待确认事项。"></textarea>
+                      <div class="generator-field-error" id="gen-output-desc-error"></div>
+                    </div>
+
+                    <div class="config-group wide">
+                      <label for="gen-output-format">输出格式要求</label>
+                      <textarea class="text-area" id="gen-output-format" placeholder="例如：先给摘要，再给行动项表格，最后列待确认信息。"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="config-group wide">
+                    <label>验收标准</label>
+                    <div class="generator-chip-group" id="generator-acceptance-list"></div>
+                    <textarea class="text-area" id="gen-acceptance-custom" placeholder="补充你的专属标准，例如：没有明确责任人时要标注待确认。"></textarea>
+                    <div class="generator-field-hint">可以勾选预置标准，再补充专属标准。</div>
+                    <div class="generator-field-error" id="gen-acceptance-checks-error"></div>
+                  </div>
+
+                  <div class="config-group wide">
+                    <label>标准步骤</label>
+                    <div class="step-list" id="generator-step-items"></div>
+                    <div class="generator-inline-actions">
+                      <button class="small-btn" id="generator-step-add" type="button">新增一步</button>
+                    </div>
+                    <div class="generator-field-hint">支持上下调整顺序，默认会给你 4 个空位。</div>
+                    <div class="generator-field-error" id="gen-steps-error"></div>
+                  </div>
+
+                  <div class="config-group wide">
+                    <label>例外情况 / 分支</label>
+                    <div class="branch-list" id="generator-branch-items"></div>
+                    <div class="generator-inline-actions">
+                      <button class="small-btn" id="generator-branch-add" type="button">新增规则</button>
+                    </div>
+                    <div class="generator-field-hint">每条规则都按“如果……那么……”来写。</div>
+                    <div class="generator-field-error" id="gen-branches-error"></div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="generator-group" data-generator-group="reference" hidden>
+                <div class="generator-group-summary">
+                  <div class="generator-group-head">
+                    <div class="generator-group-meta">
+                      <div class="section-title">C. 约束与参考</div>
+                      <div class="generator-group-desc">把模板、参考角色、约束、参考材料和补充背景集中到最后一步。</div>
+                    </div>
+                    <span class="file-chip generator-group-progress" data-generator-progress="reference">0/6</span>
+                  </div>
+                </div>
+                <div class="generator-group-body">
+                  <div class="config-group wide">
+                    <label for="gen-references">参考模板 / 示例</label>
+                    <textarea class="text-area" id="gen-references" placeholder="例如：历史周报模板、品牌规范、优秀示例、固定字段说明。"></textarea>
+                    <div class="generator-field-hint">如果你已经有固定模板或强参考，请尽量写出来。</div>
+                  </div>
+
+                  <div class="config-group wide">
+                    <label>参考角色</label>
+                    <div class="generator-chip-group" id="generator-reference-role-list"></div>
+                  </div>
+
+                  <div class="generator-inline-grid">
+                    <div class="config-group wide">
+                      <label>必须做到</label>
+                      <div class="tag-input-shell">
+                        <div class="tag-input-list" id="generator-must-list"></div>
+                        <div class="tag-input-row">
+                          <input class="text-input" id="generator-must-input" type="text" placeholder="输入后回车，例如：保留关键细节" />
+                          <button class="small-btn" id="generator-must-add" type="button">添加</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="config-group wide">
+                      <label>绝对不要做</label>
+                      <div class="tag-input-shell">
+                        <div class="tag-input-list" id="generator-must-not-list"></div>
+                        <div class="tag-input-row">
+                          <input class="text-input" id="generator-must-not-input" type="text" placeholder="输入后回车，例如：编造业务事实" />
+                          <button class="small-btn" id="generator-must-not-add" type="button">添加</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="generator-field-error" id="gen-constraints-error"></div>
+
+                  <div class="config-group wide">
+                    <label for="gen-optional-background">补充背景</label>
+                    <textarea class="text-area" id="gen-optional-background" placeholder="推荐 50 到 200 字；只有额外背景会明显影响产出时再补。"></textarea>
+                    <div class="generator-inline-row generator-inline-row-end">
+                      <div class="generator-field-hint">推荐字数范围：50 到 200 字。</div>
+                      <div class="file-chip" id="generator-background-counter">0 / 200</div>
+                    </div>
+                    <div class="generator-field-error" id="gen-optional-background-error"></div>
+                  </div>
+
+                  <div class="config-group wide">
+                    <label for="generator-material-value">参考材料</label>
+                    <div class="generator-field-hint">支持链接、本地路径、图片、文件和补充说明。材料会生成摘要并进入 Prompt，也支持本地预览。</div>
+                    <div class="generator-material-composer advanced">
+                      <select class="text-input" id="generator-material-type">
+                        <option value="link">链接</option>
+                        <option value="path">本地路径</option>
+                        <option value="note">补充说明</option>
+                      </select>
+                      <select class="text-input" id="generator-material-usage">
+                        <option value="template">模板</option>
+                        <option value="example">示例</option>
+                        <option value="background">背景资料</option>
+                        <option value="forbidden">禁忌说明</option>
+                      </select>
+                      <input class="text-input wide" id="generator-material-value" type="text" placeholder="输入链接、本地路径或补充说明标题" />
+                      <input class="text-input wide" id="generator-material-note" type="text" placeholder="给这份材料加一句备注，例如：沿用模板格式 / 主参考文件" />
+                      <div class="notice-banner subtle generator-material-mode-preview" id="generator-material-prompt-mode-preview">进入 Prompt 的方式：作为背景摘要写入</div>
+                      <div class="generator-inline-actions">
+                        <button class="small-btn" id="generator-material-add" type="button">添加材料</button>
+                        <label class="small-btn" for="generator-material-file">选择文件 / 图片</label>
+                        <input id="generator-material-file" type="file" multiple hidden />
+                      </div>
+                    </div>
+                    <div class="file-chip-list" id="generator-material-list" style="margin-top:12px;">
+                      <span class="file-chip">还没有参考材料。你可以先加链接、本地路径，或直接选择文件。</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
             </form>
           </section>
+        </div>
 
-          <section class="workbench-section">
-            <div class="section-title">SKILL.md 预览</div>
-            <pre class="code-block" id="skill-preview">选择一个 Skill 后，这里会显示本地 SKILL.md 的开头内容。</pre>
-            <p class="foot-note" id="foot-note">提示：桌面客户端直接用 <code>npm start</code>，如果你是浏览器调试模式，再运行 <code>npm run dev:web</code>。</p>
-          </section>
-        </aside>
+        <div class="generator-toolbar">
+          <button class="small-btn" id="generator-reset-btn" data-action="reset-generator" type="button">重置</button>
+          <button class="small-btn" id="generator-prev-btn" type="button" hidden>上一步</button>
+          <button class="primary-btn" id="generator-preview-btn" data-action="next-generator-step" type="button">下一步</button>
+        </div>
+
+        <div class="sr-only" id="generator-status" aria-live="polite" hidden></div>
+
+        <div class="generator-preview-modal" id="generator-preview-modal" hidden>
+          <div class="generator-preview-panel">
+            <div class="generator-preview-head">
+              <div>
+                <div class="section-title">Prompt 预览</div>
+                <h3>可发送给 OpenClaw 的 Skill Prompt</h3>
+                <p class="skill-subtitle">这里按区块展示生成结果。你可以逐块编辑、复制或恢复，再整体发送给 OpenClaw。</p>
+              </div>
+              <button class="small-btn modal-close-btn" id="generator-modal-close-btn" type="button">关闭</button>
+            </div>
+
+            <div class="generator-material-preview" id="generator-material-preview" hidden>
+              <div class="generator-material-preview-head">
+                <div>
+                  <div class="section-title">参考材料</div>
+                  <div class="generator-preview-copy">这些材料会整理成文字摘要，和 Prompt 一起发送给 OpenClaw。</div>
+                </div>
+                <div class="generator-material-preview-summary" id="generator-material-preview-summary"></div>
+              </div>
+              <div class="notice-banner generator-material-preview-note">
+                当前会把材料的名称、类型、用途、进入 Prompt 的方式、路径或链接、备注等信息写进 Prompt 并一并发送；不会自动上传原始 PDF、图片或本地文件内容。点任意材料卡片可以先本地预览。
+              </div>
+              <div class="generator-material-preview-list compact" id="generator-material-preview-list"></div>
+            </div>
+
+            <div class="generator-preview-body">
+              <div class="generator-block-list" id="generator-block-list"></div>
+            </div>
+
+            <div class="modal-actions">
+              <button class="small-btn" id="generator-copy-btn" data-action="copy-prompt" type="button">复制 Prompt</button>
+              <button class="primary-btn" id="generator-send-btn" data-action="send-openclaw" type="button">发送给 OpenClaw</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="generator-material-modal" id="generator-material-modal" hidden>
+          <div class="generator-material-panel">
+            <div class="generator-preview-head">
+              <div>
+                <div class="section-title">材料预览</div>
+                <h3 id="generator-material-modal-title">参考材料</h3>
+                <p class="skill-subtitle" id="generator-material-modal-subtitle">这里会展示当前材料的预览、路径或链接说明。</p>
+              </div>
+              <button class="small-btn modal-close-btn" id="generator-material-modal-close-btn" type="button">关闭</button>
+            </div>
+
+            <div class="generator-material-body">
+              <div class="detail-list" id="generator-material-modal-meta"></div>
+              <div class="generator-material-render" id="generator-material-modal-render"></div>
+            </div>
+
+            <div class="modal-actions">
+              <a class="ghost-link" id="generator-material-modal-open" href="#" target="_blank" rel="noreferrer" hidden>在新窗口打开</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-toggle-notice" id="skill-toggle-notice" role="status" aria-live="polite" hidden></div>
       </section>
     </div>
 
-    <script>
-      const state = {
-        payload: null,
-        filter: '个人技能',
-        search: '',
-        selectedSkillName: '',
-        apiBase: '',
-        loadingDashboard: false,
-        loadingDetail: false,
-        savingConfig: false
-      };
-
-      const detailCache = new Map();
-      const FILTERS = ['全部', '个人技能', '内置技能', '已就绪', '待配置'];
-
-      const $ = (selector) => document.querySelector(selector);
-      const skillGrid = $('#skill-grid');
-      const emptyState = $('#empty-state');
-      const filterList = $('#filter-list');
-      const searchBox = $('#search-box');
-      const refreshBtn = $('#refresh-btn');
-      const refreshState = $('#refresh-state');
-      const configForm = $('#config-form');
-      const configNotice = $('#config-notice');
-      const configEnabled = $('#config-enabled');
-      const primaryEnvGroup = $('#primary-env-group');
-      const primaryEnvLabel = $('#primary-env-label');
-      const configApiKey = $('#config-api-key');
-      const configEnvJson = $('#config-env-json');
-      const configJson = $('#config-json');
-      const reloadConfigBtn = $('#reload-config-btn');
-      const saveConfigBtn = $('#save-config-btn');
-
-      function platformLabel(platform) {
-        return platform === 'darwin'
-          ? 'macOS'
-          : platform === 'win32'
-            ? 'Windows'
-            : platform === 'linux'
-              ? 'Linux'
-              : platform || 'Unknown';
-      }
-
-      function hydrateClientInfo() {
-        const info = window.openclawDesktop?.getClientInfo?.();
-        if (info) {
-          $('#pill-client').textContent = `${platformLabel(info.platform)} 客户端 v${info.version}`;
-          return;
-        }
-
-        $('#pill-client').textContent = '浏览器调试模式';
-      }
-
-      function escapeHtml(value) {
-        return String(value || '')
-          .replaceAll('&', '&amp;')
-          .replaceAll('<', '&lt;')
-          .replaceAll('>', '&gt;')
-          .replaceAll('"', '&quot;')
-          .replaceAll("'", '&#39;');
-      }
-
-      function relativeTime(dateString) {
-        const diff = Date.now() - new Date(dateString).getTime();
-        const seconds = Math.max(1, Math.floor(diff / 1000));
-        if (seconds < 60) return `${seconds} 秒前`;
-        const minutes = Math.floor(seconds / 60);
-        if (minutes < 60) return `${minutes} 分钟前`;
-        const hours = Math.floor(minutes / 60);
-        return `${hours} 小时前`;
-      }
-
-      async function apiFetch(path, options = {}) {
-        const bases = state.apiBase ? [state.apiBase] : ['', 'http://127.0.0.1:4318'];
-        let lastError = new Error('本地数据接口未启动');
-
-        for (const base of bases) {
-          try {
-            const response = await fetch(`${base}${path}`, {
-              ...options,
-              headers: {
-                'Content-Type': 'application/json',
-                ...(options.headers || {})
-              }
-            });
-
-            const contentType = response.headers.get('content-type') || '';
-            if (!response.ok) {
-              const text = await response.text();
-              throw new Error(text || `HTTP ${response.status}`);
-            }
-            if (!contentType.includes('application/json')) {
-              throw new Error('接口没有返回 JSON，可能当前不是通过本地数据服务打开的。');
-            }
-
-            const payload = await response.json();
-            state.apiBase = base;
-            return payload;
-          } catch (error) {
-            lastError = error instanceof Error ? error : new Error(String(error));
-          }
-        }
-
-        throw lastError;
-      }
-
-      function currentSkills() {
-        if (!state.payload) return [];
-        const search = state.search.trim().toLowerCase();
-
-        return (state.payload.skills || []).filter((skill) => {
-          const matchesFilter = state.filter === '全部'
-            ? true
-            : state.filter === '个人技能'
-              ? skill.source === 'personal'
-              : state.filter === '内置技能'
-                ? skill.source === 'bundled'
-                : state.filter === '已就绪'
-                  ? skill.status?.tone === 'ready'
-                  : state.filter === '待配置'
-                    ? skill.status?.tone !== 'ready'
-                    : true;
-
-          const haystack = [
-            skill.name,
-            skill.description,
-            skill.sourceLabel,
-            skill.sourceRaw,
-            skill.location
-          ].join(' ').toLowerCase();
-
-          return matchesFilter && (!search || haystack.includes(search));
-        });
-      }
-
-      function chooseDefaultSkill(skills) {
-        return skills.find((skill) => skill.source === 'personal')
-          || skills.find((skill) => skill.status?.tone === 'ready')
-          || skills[0]
-          || null;
-      }
-
-      function ensureSelectedSkill() {
-        const skills = currentSkills();
-        if (!skills.length) {
-          state.selectedSkillName = '';
-          return null;
-        }
-
-        const current = skills.find((skill) => skill.name === state.selectedSkillName);
-        if (current) return current;
-
-        const next = chooseDefaultSkill(skills);
-        state.selectedSkillName = next?.name || '';
-        return next;
-      }
-
-      function getSelectedSummary() {
-        if (!state.payload) return null;
-        return state.payload.skills.find((skill) => skill.name === state.selectedSkillName) || null;
-      }
-
-      function getSelectedDetail() {
-        return detailCache.get(state.selectedSkillName) || null;
-      }
-
-      function buildTagClass(skill) {
-        if (skill.source === 'personal') return 'personal';
-        if (skill.status?.tone === 'ready') return 'ready';
-        if (skill.source === 'bundled') return 'bundled';
-        return 'blocked';
-      }
-
-      function renderFilterList() {
-        if (!state.payload) return;
-
-        const counts = {
-          '全部': state.payload.summary.total,
-          '个人技能': state.payload.summary.personal,
-          '内置技能': state.payload.summary.bundled,
-          '已就绪': state.payload.summary.ready,
-          '待配置': state.payload.summary.blocked
-        };
-
-        filterList.innerHTML = FILTERS.map((filter) => `
-          <button class="filter-item ${state.filter === filter ? 'active' : ''}" data-filter="${filter}">
-            <span>${filter}</span>
-            <span class="filter-count">${counts[filter] ?? 0}</span>
-          </button>
-        `).join('');
-
-        filterList.querySelectorAll('[data-filter]').forEach((button) => {
-          button.addEventListener('click', () => {
-            state.filter = button.dataset.filter;
-            renderAll();
-            void ensureDetailForSelection();
-          });
-        });
-      }
-
-      function renderOverview() {
-        const { summary, environment } = state.payload;
-
-        $('#pill-runtime').textContent = state.apiBase ? `已连接本地接口 ${state.apiBase || '同源'}` : '正在连接本地接口';
-        $('#pill-skills').textContent = `Skill 总量 ${summary.total} 个`;
-        $('#pill-config').textContent = `配置文件 ${environment.configPath}`;
-
-        $('#overview-total').textContent = `${summary.total} 个`;
-        $('#overview-total-meta').textContent = '当前展示的是你本机实际被 OpenClaw 发现的技能列表';
-        $('#overview-ready-meta').textContent = `已就绪 ${summary.ready} 个，待配置 ${summary.blocked} 个`;
-
-        $('#overview-source').textContent = `${summary.personal} / ${summary.bundled}`;
-        $('#overview-personal-meta').textContent = `个人技能 ${summary.personal} 个`;
-        $('#overview-bundled-meta').textContent = `内置技能 ${summary.bundled} 个`;
-
-        $('#overview-configured').textContent = `${summary.configured} 项`;
-        $('#overview-config-meta').textContent = '已经写入 skills.entries 的技能数量';
-        $('#overview-blocked-meta').textContent = `仍待补依赖或配置 ${summary.blocked} 个`;
-
-        $('#overview-path').textContent = environment.configPath;
-        $('#overview-config-path').textContent = `状态目录 ${environment.stateDir}`;
-        $('#overview-workspace-path').textContent = `工作区 ${environment.workspaceDir}`;
-
-        $('#path-config').textContent = environment.configPath;
-        $('#path-skills').textContent = environment.managedSkillsDir;
-        $('#path-bundled').textContent = environment.bundledSkillsDir;
-        $('#path-workspace').textContent = environment.workspaceDir;
-        $('#path-state').textContent = environment.stateDir;
-
-        $('#skill-title').textContent = `本地 Skill 库 · ${summary.total} 个`;
-        $('#skill-subtitle').textContent = '默认优先看个人技能，再看结构、依赖和手动配置。';
-      }
-
-      function renderSkillGrid() {
-        const skills = currentSkills();
-        const selected = ensureSelectedSkill();
-
-        if (!skills.length) {
-          skillGrid.innerHTML = '';
-          emptyState.hidden = false;
-          return;
-        }
-
-        emptyState.hidden = true;
-        skillGrid.innerHTML = skills.map((skill) => `
-          <article class="skill-card ${selected && selected.name === skill.name ? 'selected' : ''}" data-skill-name="${escapeHtml(skill.name)}">
-            <div class="skill-card-body">
-              <h3>${escapeHtml(skill.emoji || '🦞')} ${escapeHtml(skill.name)}</h3>
-              <p class="skill-card-desc">${escapeHtml(skill.description)}</p>
-              <div class="card-tags">
-                <span class="tag ${skill.status?.tone === 'ready' ? 'ready' : 'blocked'}">${escapeHtml(skill.status?.label || '待检查')}</span>
-                <span class="tag ${buildTagClass(skill)}">${escapeHtml(skill.sourceLabel)}</span>
-                ${skill.configEntry?.exists ? '<span class="tag ready">已配置</span>' : '<span class="tag bundled">未配置</span>'}
-              </div>
-              <div class="skill-card-footer">${escapeHtml(skill.location || '当前未解析本地路径')}</div>
-            </div>
-          </article>
-        `).join('');
-
-        skillGrid.querySelectorAll('[data-skill-name]').forEach((card) => {
-          card.addEventListener('click', () => {
-            state.selectedSkillName = card.dataset.skillName;
-            renderAll();
-            void ensureDetailForSelection();
-          });
-        });
-      }
-
-      function buildRequirementSection(detail, summary) {
-        const skill = detail || summary;
-        if (!skill) {
-          return '<div class="requirement-item"><strong>提示</strong>当前没有可展示的 Skill。</div>';
-        }
-
-        const items = [];
-        const requirements = detail?.requirements || { bins: [], anyBins: [], env: [], config: [], os: [] };
-
-        if (skill.missing?.bins?.length) {
-          items.push(`<div class="requirement-item"><strong>缺少 CLI</strong>${escapeHtml(skill.missing.bins.join('、'))}</div>`);
-        }
-        if (skill.missing?.env?.length) {
-          items.push(`<div class="requirement-item"><strong>缺少环境变量</strong>${escapeHtml(skill.missing.env.join('、'))}</div>`);
-        }
-        if (skill.missing?.config?.length) {
-          items.push(`<div class="requirement-item"><strong>缺少配置项</strong>${escapeHtml(skill.missing.config.join('、'))}</div>`);
-        }
-        if (requirements.bins?.length) {
-          items.push(`<div class="requirement-item"><strong>声明依赖</strong>${escapeHtml(requirements.bins.join('、'))}</div>`);
-        }
-        if (requirements.env?.length) {
-          items.push(`<div class="requirement-item"><strong>声明环境变量</strong>${escapeHtml(requirements.env.join('、'))}</div>`);
-        }
-        if (requirements.config?.length) {
-          items.push(`<div class="requirement-item"><strong>声明配置项</strong>${escapeHtml(requirements.config.join('、'))}</div>`);
-        }
-        if (detail?.install?.length) {
-          items.push(`<div class="requirement-item"><strong>安装提示</strong>${escapeHtml(detail.install.join('；'))}</div>`);
-        }
-        if (detail?.configChecks?.length) {
-          items.push(`<div class="requirement-item"><strong>配置检查</strong>${escapeHtml(detail.configChecks.join('、'))}</div>`);
-        }
-
-        if (!items.length) {
-          items.push('<div class="requirement-item"><strong>当前状态</strong>这个 Skill 在你当前环境里已经可以直接使用。</div>');
-        }
-
-        return items.join('');
-      }
-
-      function populateConfigForm(detail) {
-        configEnabled.checked = Boolean(detail?.configEntry?.enabled ?? true);
-        primaryEnvGroup.hidden = !detail?.primaryEnv;
-        primaryEnvLabel.textContent = detail?.primaryEnv ? `${detail.primaryEnv} / apiKey` : '主密钥';
-        configApiKey.value = detail?.configEntry?.apiKey || '';
-        configEnvJson.value = JSON.stringify(detail?.configEntry?.env || {}, null, 2);
-        configJson.value = JSON.stringify(detail?.configEntry?.config || {}, null, 2);
-        saveConfigBtn.disabled = !detail || state.savingConfig;
-        reloadConfigBtn.disabled = !detail || state.loadingDetail;
-      }
-
-      function renderWorkbench() {
-        const summary = getSelectedSummary() || ensureSelectedSkill();
-        const detail = getSelectedDetail();
-
-        if (!summary) {
-          $('#workbench-title').textContent = '等待选择 Skill';
-          $('#workbench-desc').textContent = '当前筛选条件没有可展示的 Skill。';
-          $('#detail-list').innerHTML = '<div class="detail-item"><strong>状态</strong>暂无可用 Skill。</div>';
-          $('#requirement-list').innerHTML = '<div class="requirement-item"><strong>建议</strong>尝试切换筛选条件或清空搜索词。</div>';
-          $('#file-list').innerHTML = '<span class="file-chip">当前没有文件结构可展示</span>';
-          $('#skill-preview').textContent = '当前没有可预览的 SKILL.md。';
-          configNotice.innerHTML = '右侧表单会直接写回 <code>~/.openclaw/openclaw.json</code>。';
-          populateConfigForm(null);
-          return;
-        }
-
-        const status = (detail || summary).status;
-        $('#workbench-title').textContent = summary.name;
-        $('#workbench-desc').textContent = summary.description;
-        $('#runtime-banner').className = `status-banner ${status?.tone === 'ready' ? 'good' : 'warn'}`;
-        $('#runtime-banner-text').textContent = state.loadingDetail
-          ? '正在读取这个 Skill 的本地结构和配置详情'
-          : status?.note || '状态信息读取中';
-        $('#runtime-banner-side').textContent = summary.sourceLabel;
-
-        $('#detail-list').innerHTML = `
-          <div class="detail-item"><strong>来源</strong>${escapeHtml(summary.sourceLabel)} · ${escapeHtml(summary.location || '当前未解析路径')}</div>
-          <div class="detail-item"><strong>当前状态</strong>${escapeHtml(status?.label || '待检查')} · ${escapeHtml(status?.note || '正在读取')}</div>
-          <div class="detail-item"><strong>手动配置</strong>${summary.configEntry?.exists ? '当前已经存在 skills.entries 配置' : '当前还没有手动 entries，会按默认值运行'}</div>
-          <div class="detail-item"><strong>Skill Key</strong>${escapeHtml(detail?.skillKey || summary.skillKey || summary.name)}</div>
-          ${summary.homepage ? `<div class="detail-item"><strong>文档入口</strong><a href="${escapeHtml(summary.homepage)}" target="_blank" rel="noreferrer">${escapeHtml(summary.homepage)}</a></div>` : ''}
-        `;
-
-        $('#file-list').innerHTML = detail?.files?.length
-          ? detail.files.map((file) => `<span class="file-chip">${escapeHtml(file)}</span>`).join('')
-          : '<span class="file-chip">正在读取目录结构</span>';
-
-        $('#requirement-list').innerHTML = buildRequirementSection(detail, summary);
-        $('#skill-preview').textContent = detail?.skillMdPreview || '正在读取本地 SKILL.md 内容...';
-        configNotice.innerHTML = detail
-          ? `当前写入目标：<code>skills.entries.${escapeHtml(detail.skillKey)}</code>。${detail.requirements?.env?.length ? `必填环境变量：${escapeHtml(detail.requirements.env.join('、'))}。` : ''}${detail.requirements?.config?.length ? `必填配置项：${escapeHtml(detail.requirements.config.join('、'))}。` : ''}`
-          : '正在读取当前 Skill 的配置结构。';
-        populateConfigForm(detail);
-      }
-
-      function renderAll() {
-        if (!state.payload) return;
-        renderOverview();
-        renderFilterList();
-        renderSkillGrid();
-        renderWorkbench();
-      }
-
-      async function loadDashboard(force = false) {
-        state.loadingDashboard = true;
-        refreshState.textContent = '正在刷新本地 skill 数据...';
-        refreshBtn.disabled = true;
-
-        try {
-          if (force) detailCache.clear();
-          const path = force ? '/api/dashboard?force=1' : '/api/dashboard';
-          state.payload = await apiFetch(path);
-
-          if (state.filter === '个人技能' && !state.payload.skills.some((skill) => skill.source === 'personal')) {
-            state.filter = '全部';
-          }
-
-          if (!state.selectedSkillName && state.payload.skills.length) {
-            state.selectedSkillName = chooseDefaultSkill(state.payload.skills)?.name || '';
-          }
-
-          renderAll();
-          refreshState.textContent = `最近刷新 ${relativeTime(state.payload.generatedAt)}`;
-          await ensureDetailForSelection(force);
-        } catch (error) {
-          refreshState.textContent = '读取失败';
-          $('#skill-title').textContent = '无法读取本地 OpenClaw 数据';
-          $('#skill-subtitle').textContent = error.message || '请检查本地服务和 openclaw 命令。';
-          skillGrid.innerHTML = '';
-          emptyState.hidden = false;
-          emptyState.innerHTML = `接口请求失败：${escapeHtml(error.message || error)}。请先运行 <code>PORT=4318 node server.js</code>。`;
-        } finally {
-          state.loadingDashboard = false;
-          refreshBtn.disabled = false;
-        }
-      }
-
-      async function loadSkillDetail(skillName, force = false) {
-        if (!skillName) return null;
-        if (!force && detailCache.has(skillName)) return detailCache.get(skillName);
-
-        state.loadingDetail = true;
-        renderWorkbench();
-
-        try {
-          const path = force
-            ? `/api/skills/${encodeURIComponent(skillName)}?force=1`
-            : `/api/skills/${encodeURIComponent(skillName)}`;
-          const detail = await apiFetch(path);
-          detailCache.set(skillName, detail);
-          return detail;
-        } catch (error) {
-          configNotice.textContent = `读取 Skill 详情失败：${error.message}`;
-          return null;
-        } finally {
-          state.loadingDetail = false;
-          renderWorkbench();
-        }
-      }
-
-      async function ensureDetailForSelection(force = false) {
-        const summary = getSelectedSummary() || ensureSelectedSkill();
-        if (!summary) return;
-        await loadSkillDetail(summary.name, force);
-      }
-
-      function parseJsonField(label, value) {
-        const text = String(value || '').trim();
-        if (!text) return {};
-        try {
-          const parsed = JSON.parse(text);
-          if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-            throw new Error(`${label} 必须是 JSON 对象`);
-          }
-          return parsed;
-        } catch {
-          throw new Error(`${label} 不是合法的 JSON 对象`);
-        }
-      }
-
-      searchBox.addEventListener('input', (event) => {
-        state.search = event.target.value;
-        renderAll();
-        void ensureDetailForSelection();
-      });
-
-      refreshBtn.addEventListener('click', () => {
-        void loadDashboard(true);
-      });
-
-      reloadConfigBtn.addEventListener('click', () => {
-        void loadDashboard(true);
-      });
-
-      configForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const summary = getSelectedSummary();
-        if (!summary) return;
-
-        try {
-          state.savingConfig = true;
-          saveConfigBtn.disabled = true;
-          configNotice.textContent = '正在写回本地 openclaw.json...';
-
-          const payload = {
-            enabled: configEnabled.checked,
-            apiKey: configApiKey.value.trim(),
-            env: parseJsonField('环境变量 JSON', configEnvJson.value),
-            config: parseJsonField('配置项 JSON', configJson.value)
-          };
-
-          const detail = await apiFetch(`/api/skills/${encodeURIComponent(summary.name)}/config`, {
-            method: 'POST',
-            body: JSON.stringify(payload)
-          });
-
-          detailCache.set(summary.name, detail);
-          await loadDashboard(true);
-          renderWorkbench();
-          configNotice.innerHTML = `已保存到 <code>skills.entries.${escapeHtml(detail.skillKey)}</code>。`;
-        } catch (error) {
-          configNotice.textContent = error.message;
-        } finally {
-          state.savingConfig = false;
-          saveConfigBtn.disabled = false;
-        }
-      });
-
-      hydrateClientInfo();
-      loadDashboard();
-    </script>
+    <script src="/skill-generator-shared.js"></script>
+    <script src="/app.js"></script>
   </body>
 </html>

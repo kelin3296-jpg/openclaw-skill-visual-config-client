@@ -1,4 +1,4 @@
-# 部署与打包
+# 部署、打包与开源发布
 
 ## 本地开发
 
@@ -60,12 +60,17 @@ npm run dist
 ## 开源发布
 
 ```bash
-git init
 git add .
-git commit -m "feat: initialize OpenClaw skill desktop client"
-git branch -M main
+git commit -m "feat: prepare open-source release"
 git remote add origin <your-repo-url>
 git push -u origin main
 ```
 
-如果机器已经配置了 GitHub Token，也可以通过 GitHub API 或 CLI 创建远程仓库后再 push。
+推荐在推送前先确认：
+
+- `npm test`
+- `npm run smoke`
+- `README.md`、`LICENSE`、`CONTRIBUTING.md`、`SECURITY.md` 已齐备
+- `.github/workflows/ci.yml` 已存在
+
+如果本机已经配置了 GitHub CLI 或 SSH key，也可以先创建远程仓库再 push。

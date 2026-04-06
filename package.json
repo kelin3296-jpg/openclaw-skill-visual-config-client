@@ -10,6 +10,7 @@
     "dev": "node scripts/run-electron.js .",
     "dev:web": "node server.js",
     "smoke": "node scripts/run-electron.js . --smoke",
+    "test:ui": "node --test tests/skill-generator-ui.test.js",
     "test": "node --test tests/*.test.js",
     "package": "electron-builder --dir",
     "dist": "electron-builder"
@@ -57,6 +58,7 @@
   },
   "devDependencies": {
     "electron": "^41.1.1",
-    "electron-builder": "^26.8.1"
+    "electron-builder": "^26.8.1",
+    "playwright": "^1.52.0"
   }
 }

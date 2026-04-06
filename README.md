@@ -1,72 +1,117 @@
-# OpenClaw 技能可视化配置客户端
+# ClawForge
 
-这是一个直接连接本地 OpenClaw 数据的桌面客户端，不是静态网页示意图。
+ClawForge is an open-source desktop and browser-based workspace for OpenClaw Skill browsing, configuration, and prompt generation.
 
-它会在本机读取真实的 OpenClaw skill 列表、来源路径、依赖检查、`SKILL.md` 预览，以及 `skills.entries.<skillKey>` 的手动配置，并把修改写回本地配置文件。
+中文说明：这是一个面向本地 OpenClaw 环境的可视化配置项目，支持浏览真实 Skill、查看结构文件、手动修改配置，以及生成并发送 Skill Prompt。
 
-## 主要能力
+## What It Does
 
-- 查看本机真实的 OpenClaw skills，总量、来源、状态和已配置数量
-- 按个人技能、内置技能、已就绪、待配置等维度筛选
-- 查看每个 skill 的本地路径、目录结构、缺失依赖和 `SKILL.md` 预览
-- 直接编辑并保存 `skills.entries.<skillKey>` 到本地 `openclaw.json`
-- 同时支持桌面客户端启动和浏览器调试模式
-- 兼容 macOS 和 Windows 的默认 OpenClaw 路径
+- Read real local OpenClaw Skill data instead of rendering mock content
+- Browse Skills by source, status, and search keywords
+- Drill into a Skill workbench to inspect files, config hints, and editable content
+- Enable or disable Skills from the library UI
+- Generate structured Skill prompts from a multi-step scenario form
+- Send prompts to OpenClaw Control and attach compatible reference files
+- Run in Electron or browser mode
 
-## 项目结构
+## App Modes
 
-- `public/index.html`：客户端界面
-- `src/main.js`：Electron 桌面入口
-- `src/preload.js`：桌面桥接信息
-- `src/server.js`：本地 HTTP 服务
-- `src/lib/openclaw-service.js`：OpenClaw 数据读取与写回核心逻辑
-- `tests/openclaw-service.test.js`：服务层测试
-- `docs/DEPLOY.md`：打包、冒烟测试和开源发布说明
-
-## 快速开始
+### Desktop client
 
 ```bash
-cd /Users/xieluo/Desktop/openclaw技能可视化配置项目
 npm install
 npm start
 ```
 
-启动后会直接打开桌面客户端窗口。
-
-如果只想用浏览器调试页面：
+### Browser mode
 
 ```bash
+npm install
 npm run dev:web
 ```
 
-然后访问 `http://127.0.0.1:4318`。
+Then open:
 
-## 测试
+```text
+http://127.0.0.1:4318
+```
+
+## Main Areas
+
+### Skill Generator
+
+- Multi-step scenario form
+- Reference material management
+- Prompt preview modal
+- One-click send to OpenClaw
+
+### Skill Library
+
+- Search and lightweight filtering
+- Three-column card layout
+- Enable / disable switches
+- Drill-down Skill workbench modal
+
+### Skill Workbench
+
+- File structure overview
+- File meaning and config hints
+- Local file editing and save-back
+
+## Project Structure
+
+- `public/index.html`: UI layout and styling
+- `public/app.js`: client state, interactions, and browser-mode flows
+- `public/skill-generator-shared.js`: shared generator logic
+- `src/main.js`: Electron entry
+- `src/preload.js`: desktop bridge
+- `src/server.js`: local API and static server
+- `src/lib/openclaw-service.js`: local OpenClaw data and config logic
+- `src/lib/openclaw-control.js`: OpenClaw Control browser automation
+- `tests/`: service, UI, generator, and control tests
+
+## Scripts
+
+```bash
+npm start      # Electron desktop client
+npm run dev    # Electron desktop client
+npm run dev:web
+npm test
+npm run smoke
+npm run dist
+```
+
+## Windows Compatibility
+
+The project already handles these default Windows paths:
+
+- OpenClaw config: `%USERPROFILE%\\.openclaw\\openclaw.json`
+- OpenClaw CLI: `%APPDATA%\\npm\\openclaw.cmd`
+- Bundled Skills: `%APPDATA%\\npm\\node_modules\\openclaw\\skills`
+
+If your setup differs, you can override with:
+
+```bash
+OPENCLAW_BIN=C:\path\to\openclaw.cmd
+OPENCLAW_CONFIG_PATH=C:\path\to\openclaw.json
+OPENCLAW_STATE_DIR=C:\path\to\.openclaw
+```
+
+## Validation
+
+Run before publishing or opening a PR:
 
 ```bash
 npm test
 npm run smoke
 ```
 
-- `npm test`：校验服务层逻辑
-- `npm run smoke`：启动 Electron 客户端做一次自动冒烟测试
+## Documentation
 
-## Windows 适配
+- [Deployment guide](docs/DEPLOY.md)
+- [Contributing guide](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
 
-项目已经内置这些默认路径解析：
+## License
 
-- OpenClaw 配置：`%USERPROFILE%\\.openclaw\\openclaw.json`
-- OpenClaw CLI：`%APPDATA%\\npm\\openclaw.cmd`
-- OpenClaw 内置技能：`%APPDATA%\\npm\\node_modules\\openclaw\\skills`
-
-如果你的环境不在这些位置，可以额外设置：
-
-```bash
-OPENCLAW_BIN=/custom/path/to/openclaw
-OPENCLAW_CONFIG_PATH=/custom/path/to/openclaw.json
-OPENCLAW_STATE_DIR=/custom/path/to/.openclaw
-```
-
-## 许可证
-
-MIT，详见 `LICENSE`。
+MIT. See [LICENSE](LICENSE).

@@ -517,19 +517,16 @@ async function goToGeneratorFinalStep(page) {
   await page.waitForFunction(() => (document.querySelector('#generator-preview-btn')?.textContent || '').trim() === '生成');
 }
 
-test('generator tab exposes template presets, trigger strategy controls, and block preview modal', async () => {
+test('generator workspace hides library navigation and exposes the new cockpit rails', async () => {
   const { page, context } = await createPage();
 
   assert.equal(await page.locator('#generator-view').isVisible(), true);
   assert.equal(await page.locator('#library-view').isHidden(), true);
-  assert.equal(await page.locator('#view-tabs .view-tab').nth(0).textContent(), 'Skill 生成器');
-  assert.equal(await page.locator('#view-tabs .view-tab').nth(1).textContent(), 'Skill 库');
-  await page.click('[data-view-tab="generator"]');
-
-  assert.equal(await page.locator('#library-view').isHidden(), true);
-  assert.equal(await page.locator('#generator-view').isVisible(), true);
-  assert.equal(await page.locator('.generator-result-panel').count(), 0);
-  assert.equal(await page.locator('text=结果与发送').count(), 0);
+  assert.equal(await page.locator('#view-tabs').isHidden(), true);
+  assert.equal(await page.locator('#generator-hero').isVisible(), true);
+  assert.equal(await page.locator('#generator-insight-panel').isVisible(), true);
+  assert.equal(await page.locator('#generator-preview-card').isVisible(), true);
+  assert.equal(await page.locator('#generator-current-step-title').isVisible(), true);
   assert.equal(await page.inputValue('#gen-scenario-name'), '');
   assert.equal(await page.getAttribute('#gen-scenario-name', 'placeholder'), '例如：会议纪要与行动项提炼');
   assert.equal(await page.locator('#generator-preview-btn').count(), 1);
@@ -543,6 +540,9 @@ test('generator tab exposes template presets, trigger strategy controls, and blo
   await page.waitForFunction(() => document.querySelector('#gen-scenario-name')?.value === 'PRD 需求文档生成');
   assert.match(await page.inputValue('#gen-scenario-name'), /PRD 需求文档生成/);
   assert.match(await page.textContent('#generator-template-description'), /PRD|需求/);
+  assert.equal(await page.getAttribute('#generator-ready-card', 'data-tone'), 'good');
+  assert.match(await page.textContent('#generator-insight-list'), /PRD 需求文档生成/);
+  assert.match(await page.textContent('#generator-preview-summary'), /SKILL\.md|结构化 PRD|PRD/);
 
   await page.click('#generator-trigger-mode-list [data-chip-value="keyword"]');
   assert.equal(await page.locator('#generator-keyword-config').isHidden(), false);
@@ -572,66 +572,14 @@ test('generator tab exposes template presets, trigger strategy controls, and blo
   await context.close();
 });
 
-test('library view shows file-centric workbench and uses horizontal filters', async () => {
+test('primary UI keeps the library surface hidden from navigation and first-screen layout', async () => {
   const { page, context, pageErrors } = await createPage();
-  await page.click('[data-view-tab="library"]');
-
-  assert.equal(await page.locator('.overview-grid').count(), 0);
-  assert.equal(await page.locator('#library-view > .library-rail').count(), 1);
-  assert.equal(await page.locator('.dashboard-wrapper .workbench').count(), 0);
   assert.equal(await page.locator('#workbench-modal').isHidden(), true);
-  assert.equal(await page.locator('#filter-list [data-filter]').count(), 4);
-  assert.equal(await page.locator('#library-view .library-rail-head').count(), 0);
-  assert.match(await page.textContent('#library-view > .library-rail'), /读取范围/);
-  assert.equal(await page.locator('#control-link').count(), 0);
-  assert.match(await page.textContent('#skill-grid'), /已绑定任务/);
-  assert.match(await page.textContent('#skill-grid'), /配置缺失/);
-  assert.equal(await page.locator('summary:has-text("本地路径")').count(), 0);
-
-  const horizontal = await page.evaluate(() => {
-    const buttons = Array.from(document.querySelectorAll('#filter-list [data-filter]'));
-    if (buttons.length < 2) return false;
-    const first = buttons[0].getBoundingClientRect();
-    const second = buttons[1].getBoundingClientRect();
-    return Math.abs(first.top - second.top) < 8;
-  });
-  assert.equal(horizontal, true);
-
-  const gridColumns = await page.evaluate(() => getComputedStyle(document.querySelector('#skill-grid')).gridTemplateColumns.split(' ').length);
-  assert.equal(gridColumns, 3);
-
-  const layout = await page.evaluate(() => {
-    const rail = document.querySelector('#library-view > .library-rail').getBoundingClientRect();
-    const skillCenter = document.querySelector('.dashboard-wrapper .skill-center').getBoundingClientRect();
-    return {
-      railAbove: rail.bottom <= skillCenter.top + 24,
-      railLeft: Math.abs(rail.left - skillCenter.left) < 12
-    };
-  });
-  assert.equal(layout.railAbove, true);
-  assert.equal(layout.railLeft, true);
-
-  await page.locator('[data-filter="configured"]').scrollIntoViewIfNeeded();
-  await page.click('[data-filter="configured"]');
-  assert.equal(await page.locator('[data-skill-name]').count(), 1);
-
-  await page.click('[data-filter="all"]');
-  await page.waitForFunction(() => document.querySelectorAll('[data-skill-name]').length === 2);
-
-  await page.click('[data-skill-name]');
-  await page.waitForFunction(() => !document.querySelector('#workbench-modal')?.hidden);
-  await page.waitForFunction(() => document.querySelector('[data-file-path="SKILL.md"]'));
-  await page.click('[data-file-path="SKILL.md"]');
-  await page.waitForFunction(() => /# PRD skill/.test(document.querySelector('#file-editor-content')?.value || ''));
-
-  assert.equal(await page.locator('#workbench-modal').isHidden(), false);
-  assert.match(await page.textContent('#automation-warning'), /目录位置|主入口/);
-  assert.match(await page.textContent('#file-entry-list'), /SKILL\.md/);
-  assert.match(await page.textContent('#file-entry-list'), /frontmatter 字段：name、description/);
-  assert.match(await page.textContent('#file-meaning-banner'), /文件|说明|Skill/);
-  assert.match(await page.textContent('#requirement-list'), /frontmatter 字段|配置提示/);
-  assert.match(await page.textContent('#workbench-modal'), /建议动作：去配置面板|配置缺失/);
-  assert.match(await page.inputValue('#file-editor-content'), /# PRD skill/);
+  assert.equal(await page.locator('#view-tabs').isHidden(), true);
+  assert.equal(await page.locator('#library-view').isHidden(), true);
+  assert.equal(await page.locator('#library-view [data-skill-name]').count(), 2);
+  assert.equal(await page.locator('#generator-view').isVisible(), true);
+  assert.match(await page.textContent('#generator-hero'), /Skill 指令|Skill prompt|OpenClaw/);
   assert.deepEqual(pageErrors, []);
 
   await context.close();
@@ -653,11 +601,10 @@ test('browser mode renders dashboard when cron telemetry is unavailable', async 
   });
 
   const { page, context, pageErrors } = await createPage({ serverUrl: handle.url });
-  await page.click('[data-view-tab="library"]');
-
-  await page.waitForSelector('[data-skill-name]');
-  assert.match(await page.textContent('#skill-title'), /Skill 库 · 2 个/);
-  assert.equal(await page.locator('#pill-config').count(), 0);
+  await page.waitForSelector('#generator-view');
+  assert.equal(await page.locator('#view-tabs').isHidden(), true);
+  assert.equal(await page.locator('#library-view').isHidden(), true);
+  assert.equal(await page.locator('#generator-preview-card').isVisible(), true);
   assert.match(await page.textContent('#top-control-link'), /打开 OpenClaw/);
   assert.deepEqual(pageErrors, []);
 
@@ -676,22 +623,17 @@ test('browser mode falls back when dashboard environment is missing', async () =
   });
 
   const { page, context, pageErrors } = await createPage({ serverUrl: handle.url });
-  await page.click('[data-view-tab="library"]');
-
-  await page.waitForSelector('[data-skill-name]');
-  assert.match(await page.textContent('#skill-title'), /Skill 库 · 2 个/);
-  assert.equal(await page.locator('#pill-config').count(), 0);
+  await page.waitForSelector('#generator-view');
+  assert.equal(await page.locator('#view-tabs').isHidden(), true);
+  assert.equal(await page.locator('#generator-insight-panel').isVisible(), true);
   assert.deepEqual(pageErrors, []);
 
   await context.close();
   await new Promise((resolve) => handle.server.close(resolve));
 });
 
-test('library toolbar and file editor actions keep comfortable spacing', async () => {
+test('generator cockpit keeps comfortable spacing between hero, rails, and fixed toolbar', async () => {
   const { page, context } = await createPage();
-  await page.click('[data-view-tab="library"]');
-  await page.click('[data-skill-name]');
-  await page.waitForFunction(() => !document.querySelector('#workbench-modal')?.hidden);
 
   const spacing = await page.evaluate(() => {
     const getBox = (selector) => {
@@ -700,11 +642,15 @@ test('library toolbar and file editor actions keep comfortable spacing', async (
     };
     const gapEnough = (a, b) => (b.left - a.right >= 8) || (b.top - a.bottom >= 8) || (a.top - b.bottom >= 8);
     return {
-      editor: gapEnough(getBox('#reload-file-btn'), getBox('#save-file-btn'))
+      heroToLayout: gapEnough(getBox('#generator-hero'), getBox('#generator-insight-panel')),
+      railToPanel: gapEnough(getBox('#generator-insight-panel'), getBox('.generator-input-panel')),
+      panelToPreview: gapEnough(getBox('.generator-input-panel'), getBox('#generator-preview-card'))
     };
   });
 
-  assert.equal(spacing.editor, true);
+  assert.equal(spacing.heroToLayout, true);
+  assert.equal(spacing.railToPanel, true);
+  assert.equal(spacing.panelToPreview, true);
 
   await context.close();
 });
@@ -713,23 +659,23 @@ test('language toggle switches core copy and persists to localStorage', async ()
   const { page, context } = await createPage();
 
   assert.match(await page.textContent('#app-title'), /爪工坊/);
-  assert.match(await page.textContent('#app-subtitle'), /查看、配置并生成 OpenClaw Skill/);
+  assert.match(await page.textContent('#app-subtitle'), /围绕 Skill 生成器的轻量开源工作台/);
   assert.match(await page.textContent('#top-control-link'), /打开 OpenClaw/);
-  assert.match(await page.textContent('#view-tabs'), /Skill 生成器/);
+  assert.match(await page.textContent('#generator-hero'), /可发送给 OpenClaw|Skill 指令/);
 
   await page.click('#language-toggle-btn');
 
   await page.waitForFunction(() => (document.querySelector('#language-toggle-btn')?.textContent || '').trim() === '中');
-  assert.match(await page.textContent('#app-subtitle'), /Browse, configure, and generate OpenClaw Skills/);
+  assert.match(await page.textContent('#app-subtitle'), /lightweight open-source workspace for Skill generation/i);
   assert.match(await page.textContent('#top-control-link'), /Open OpenClaw/);
-  assert.match(await page.textContent('#view-tabs'), /Skill Generator/);
-  assert.equal(await page.getAttribute('#search-box', 'placeholder'), 'Search by name, Skill key, or description');
+  assert.match(await page.textContent('#generator-hero'), /Skill prompt|OpenClaw/);
+  assert.match(await page.textContent('#generator-insight-panel'), /Build map|Prompt signal|Missing pieces|Current step/);
 
   const storedLocale = await page.evaluate(() => window.localStorage.getItem('clawforge-locale'));
   assert.equal(storedLocale, 'en');
 
   await page.reload({ waitUntil: 'networkidle' });
-  assert.match(await page.textContent('#view-tabs'), /Skill Generator/);
+  assert.match(await page.textContent('#generator-hero'), /Skill prompt|OpenClaw/);
 
   await context.close();
 });
@@ -754,94 +700,10 @@ test('theme toggle defaults to dark mode and persists light mode selection', asy
   await context.close();
 });
 
-test('skill cards expose enabled switch and persist manual toggle state', async () => {
-  const { page, context } = await createPage();
-  await page.click('[data-view-tab="library"]');
-  await page.waitForSelector('[data-skill-name]');
-
-  const firstToggle = page.locator('[data-skill-toggle="prd-skill"]');
-  const firstToggleLabel = page.locator('[data-skill-name="prd-skill"] .skill-toggle');
-  assert.equal(await firstToggle.isChecked(), true);
-  assert.equal(await page.locator('#workbench-modal').isHidden(), true);
-
-  await firstToggleLabel.click();
-  await page.waitForFunction(() => {
-    const input = document.querySelector('[data-skill-toggle="prd-skill"]');
-    const card = document.querySelector('[data-skill-name="prd-skill"]');
-    return input && !input.checked && /已禁用/.test(card?.textContent || '');
-  });
-  await page.waitForFunction(() => /操作成功|已禁用/.test(document.querySelector('#skill-toggle-notice')?.textContent || ''));
-
-  assert.equal(await page.locator('#workbench-modal').isHidden(), true);
-  assert.equal(serverHandle.dashboard.skills.find((skill) => skill.name === 'prd-skill')?.configEntry?.enabled, false);
-  assert.match(await page.textContent('#skill-toggle-notice'), /已禁用这个 Skill|已禁用/);
-
-  await page.locator('[data-skill-name="prd-skill"] .skill-toggle').click();
-  await page.waitForFunction(() => {
-    const input = document.querySelector('[data-skill-toggle="prd-skill"]');
-    const card = document.querySelector('[data-skill-name="prd-skill"]');
-    return input && input.checked && /已就绪/.test(card?.textContent || '');
-  });
-  await page.waitForFunction(() => /操作成功|已启用/.test(document.querySelector('#skill-toggle-notice')?.textContent || ''));
-
-  assert.equal(serverHandle.dashboard.skills.find((skill) => skill.name === 'prd-skill')?.configEntry?.enabled, true);
-  assert.match(await page.textContent('#skill-toggle-notice'), /已启用这个 Skill|已启用/);
-
-  await context.close();
-});
-
-test('skill toggle shows loading state during async switch and then reports success', async () => {
-  const delayedHandle = await startMockServer({ updateConfigDelayMs: 220 });
-  const { page, context } = await createPage({ serverUrl: delayedHandle.url });
-  await page.click('[data-view-tab="library"]');
-  await page.waitForSelector('[data-skill-name]');
-
-  await page.locator('[data-skill-name="prd-skill"] .skill-toggle').click();
-
-  await page.waitForFunction(() => {
-    const toggle = document.querySelector('[data-skill-name="prd-skill"] .skill-toggle');
-    const notice = document.querySelector('#skill-toggle-notice');
-    return toggle?.classList.contains('is-loading') && /正在禁用这个 Skill|Disabling this Skill/.test(notice?.textContent || '');
-  });
-
-  await page.waitForFunction(() => {
-    const toggle = document.querySelector('[data-skill-name="prd-skill"] .skill-toggle');
-    const notice = document.querySelector('#skill-toggle-notice');
-    return !toggle?.classList.contains('is-loading') && /操作成功|Done/.test(notice?.textContent || '');
-  });
-
-  await context.close();
-  await new Promise((resolve) => delayedHandle.server.close(resolve));
-});
-
-test('workbench lets user switch files and save editable content', async () => {
-  const { page, context } = await createPage();
-  await page.click('[data-view-tab="library"]');
-  await page.click('[data-skill-name]');
-
-  await page.waitForFunction(() => document.querySelector('[data-file-path="assets/template.md"]'));
-  await page.click('[data-file-path="assets/template.md"]');
-  await page.waitForFunction(() => /assets\/template\.md/.test(document.querySelector('#file-editor-meta')?.textContent || ''));
-  await page.waitForFunction(() => /supporting files/.test(document.querySelector('#file-meaning-banner')?.textContent || ''));
-
-  assert.match(await page.textContent('#file-meaning-banner'), /supporting files/);
-  assert.match(await page.textContent('#requirement-list'), /说明、模板或脚本内容/);
-
-  await page.fill('#file-editor-content', '# Template\n\n- Title\n- Updated summary\n');
-  await page.click('#save-file-btn');
-
-  await page.waitForFunction(() => /已保存/.test(document.querySelector('#file-editor-notice')?.textContent || ''));
-  assert.match(await page.textContent('#file-editor-notice'), /已保存/);
-  assert.match(serverHandle.skillFiles['assets/template.md'].content, /Updated summary/);
-
-  await context.close();
-});
-
 test('desktop client auto-recovers local service and retries dashboard fetch', async () => {
   const { page, context } = await createPage({ desktopRecoveryMock: true });
-  await page.click('[data-view-tab="library"]');
-
-  assert.equal(await page.locator('[data-skill-name]').count(), 2);
+  await page.waitForSelector('#generator-view');
+  assert.equal(await page.locator('#generator-view').isVisible(), true);
   assert.match(await page.textContent('#refresh-state'), /最近刷新/);
   const recoverCalls = await page.evaluate(() => window.__recoverCalls);
   assert.equal(recoverCalls, 1);
@@ -851,10 +713,8 @@ test('desktop client auto-recovers local service and retries dashboard fetch', a
 
 test('browser mode auto-retries dashboard fetch after local service failure', async () => {
   const { page, context } = await createPage({ browserRetryMock: true });
-  await page.click('[data-view-tab="library"]');
-
-  await page.waitForSelector('[data-skill-name]');
-  assert.equal(await page.locator('[data-skill-name]').count(), 2);
+  await page.waitForSelector('#generator-view');
+  assert.equal(await page.locator('#generator-view').isVisible(), true);
   assert.match(await page.textContent('#refresh-state'), /最近刷新/);
 
   await context.close();
@@ -865,13 +725,13 @@ test('generator footer bar and modal actions stay pinned while scrolling', async
 
   const topShellPinned = await page.evaluate(async () => {
     const topShell = document.querySelector('.top-shell');
-    const tabs = document.querySelector('#view-tabs');
+    const hero = document.querySelector('#generator-hero');
     const shell = document.querySelector('.shell');
     const measure = () => ({
       top: Math.round(topShell.getBoundingClientRect().top),
-      tabsWidth: Math.round(tabs.getBoundingClientRect().width),
+      heroWidth: Math.round(hero.getBoundingClientRect().width),
       viewportWidth: Math.round(window.innerWidth),
-      tabsLeft: Math.round(tabs.getBoundingClientRect().left),
+      heroLeft: Math.round(hero.getBoundingClientRect().left),
       shellLeft: Math.round(shell.getBoundingClientRect().left)
     });
 
@@ -882,13 +742,13 @@ test('generator footer bar and modal actions stay pinned while scrolling', async
 
     return {
       stickyTop: after.top <= 2,
-      compactTabs: before.tabsWidth < before.viewportWidth - 80,
-      leftAligned: Math.abs(before.tabsLeft - before.shellLeft) <= 24
+      compactHero: before.heroWidth < before.viewportWidth - 32,
+      leftAligned: Math.abs(before.heroLeft - before.shellLeft) <= 24
     };
   });
 
   assert.equal(topShellPinned.stickyTop, true);
-  assert.equal(topShellPinned.compactTabs, true);
+  assert.equal(topShellPinned.compactHero, true);
   assert.equal(topShellPinned.leftAligned, true);
 
   const generatorPinned = await page.evaluate(async () => {
@@ -956,7 +816,6 @@ test('generator footer bar and modal actions stay pinned while scrolling', async
 test('generator reset clears fields and result text', async () => {
   const { page, context } = await createPage();
 
-  await page.click('[data-view-tab="generator"]');
   await page.fill('#gen-scenario-name', '临时改掉');
   await page.click('[data-action="reset-generator"]');
 
@@ -972,7 +831,6 @@ test('generator reset clears fields and result text', async () => {
 test('generator supports adding reference materials and updates prompt preview', async () => {
   const { page, context } = await createPage();
 
-  await page.click('[data-view-tab="generator"]');
   await page.selectOption('#generator-template-select', 'competitive');
   await page.waitForFunction(() => document.querySelector('#gen-scenario-name')?.value === '竞品调研总结');
   await goToGeneratorFinalStep(page);
@@ -1018,7 +876,6 @@ test('generator supports adding reference materials and updates prompt preview',
 test('copy and send show clear status feedback', async () => {
   const { page, context } = await createPage();
 
-  await page.click('[data-view-tab="generator"]');
   await page.selectOption('#generator-template-select', 'meeting');
   await page.waitForFunction(() => document.querySelector('#gen-scenario-name')?.value === '会议纪要与行动项提炼');
   await goToGeneratorFinalStep(page);

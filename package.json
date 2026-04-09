@@ -2,7 +2,7 @@
   "name": "openclaw-skill-visual-config-client",
   "productName": "OpenClaw 技能可视化配置客户端",
   "version": "0.1.0",
-  "description": "一个直接连接本地 OpenClaw skills 数据的桌面客户端，支持技能浏览、结构查看和手动配置。",
+  "description": "一个围绕 OpenClaw Skill Generator 的轻量开源桌面 / 浏览器工作台，支持结构化生成与一键发送。",
   "main": "src/main.js",
   "type": "commonjs",
   "scripts": {

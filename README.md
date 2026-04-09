@@ -4,67 +4,60 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/kelin3296-jpg/openclaw-skill-visual-config-client/ci.yml?branch=main)](https://github.com/kelin3296-jpg/openclaw-skill-visual-config-client/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/kelin3296-jpg/openclaw-skill-visual-config-client)](LICENSE)
 
-ClawForge is an open-source desktop and browser workspace for browsing, configuring, and generating OpenClaw Skills from real local data.
+ClawForge is an open-source desktop and browser workspace focused on generating OpenClaw Skills from structured scenarios and real local context.
 
-中文说明：ClawForge 是一个面向本地 OpenClaw 环境的开源可视化工作台，支持浏览真实 Skill、查看结构文件、手动修改配置，以及生成并发送 Skill Prompt。
+中文说明：ClawForge 是一个围绕本地 OpenClaw Skill Generator 场景打造的开源工作台，重点是把重复任务整理成可发送、可复用、可迭代的 Skill Prompt。
 
 ![ClawForge cover](docs/media/repo-cover.png)
 
 ## Why ClawForge
 
-OpenClaw Skills usually live across local config, skill folders, `SKILL.md`, and supporting files. ClawForge brings these parts together into one workspace so you can:
+OpenClaw Skill drafting usually needs a clear scenario, stable output structure, and enough local context to avoid prompt drift. ClawForge keeps the early-stage workflow intentionally lightweight so you can:
 
-- inspect real Skills instead of mock examples
-- understand what each file means inside a Skill
-- edit config and local content safely
 - generate new Skill prompts from structured scenarios
+- iterate on prompt blocks before sending
+- keep reference materials and local context in one place
 - send prompts to OpenClaw Control in one step
+- reuse real local Skill data as support context when needed
 
 ## Highlights
 
-- Real local data: reads actual OpenClaw Skills and config from your machine
-- Skill Library: search, filter, enable, disable, and drill into Skills quickly
-- Skill Workbench: inspect file structure, config hints, and editable files
-- Skill Generator: build reusable scenario-based Skill prompts with a guided flow
+- Generator-first workspace: one primary workflow centered on Skill generation
+- Structured three-step flow: define the scenario, shape the output, then tighten constraints
+- Block-based prompt preview: review, edit, restore, and copy the final prompt safely
+- Reference material support: add local paths, files, images, notes, and links
 - OpenClaw send flow: open the real Google Chrome browser and auto-send compatible prompt payloads
 - Dual runtime: Electron desktop client plus browser mode for UI iteration
 - Cross-platform support: works with macOS and Windows path conventions
 
 ## Main Areas
 
-### Skill Generator
+### Skill Generator Workspace
 
 - three-step guided form
+- live readiness and missing-info feedback
+- right-rail prompt signal and block summary
 - reference material management
 - preview modal for final prompt
 - one-click send to OpenClaw
 
-### Skill Library
+### Prompt Preview
 
-- lightweight search and filtering
-- dense multi-card layout
-- enable / disable Skill switches
-- drill-down workbench modal
+- editable block-by-block preview
+- copy or restore any section before sending
+- fast validation of final prompt structure
 
-### Skill Workbench
+### Local Skill Context
 
-- file structure overview
-- file purpose and config hints
-- local editable file content with save-back
+- read real local OpenClaw data as supporting context
+- keep heavier library/workbench capability in the background
+- avoid turning the first release into a complex all-in-one admin console
 
 ## Screenshots
 
 ### Skill Generator
 
 ![Skill Generator](docs/media/readme-generator.png)
-
-### Skill Library
-
-![Skill Library](docs/media/readme-library.png)
-
-### Skill Workbench
-
-![Skill Workbench](docs/media/readme-workbench.png)
 
 ### Prompt Preview
 
@@ -103,7 +96,7 @@ http://127.0.0.1:4318
 ```text
 public/
   index.html                    UI layout and styles
-  app.js                        client state and interactions
+  app.js                        generator-first client state and interactions
   skill-generator-shared.js     shared generator logic
 src/
   main.js                       Electron entry
@@ -113,7 +106,7 @@ src/
     openclaw-service.js         local OpenClaw data + config logic
     openclaw-control.js         OpenClaw Control browser automation
 tests/
-  *.test.js                     service, UI, generator, and control coverage
+  *.test.js                     service, generator UI, and control coverage
 ```
 
 ## Scripts
@@ -162,9 +155,9 @@ npm run smoke
 
 ## Roadmap
 
-- richer release assets for macOS and Windows
+- keep the generator workflow focused and lightweight
 - better attachment coverage for more material types
-- improved Skill health diagnostics and repair flows
+- stronger block editing and prompt review ergonomics
 - optional screenshots and demo walkthroughs in the repo homepage
 
 ## Documentation

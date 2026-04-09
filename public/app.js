@@ -33,7 +33,7 @@ const I18N = {
   zh: {
     app: {
       title: '爪工坊',
-      subtitle: '查看、配置并生成 OpenClaw Skill',
+      subtitle: '围绕 Skill 生成器的轻量开源工作台',
       openOpenClaw: '打开 OpenClaw',
       toggleLanguage: 'EN',
       documentTitle: 'OpenClaw 技能可视化配置客户端'
@@ -168,7 +168,7 @@ const I18N = {
   en: {
     app: {
       title: 'ClawForge',
-      subtitle: 'Browse, configure, and generate OpenClaw Skills',
+      subtitle: 'A lightweight open-source workspace for Skill generation',
       openOpenClaw: 'Open OpenClaw',
       toggleLanguage: '中',
       documentTitle: 'OpenClaw Skill Visual Config Client'
@@ -449,6 +449,23 @@ const generatorPrevBtn = $('#generator-prev-btn');
 const generatorPreviewBtn = $('#generator-preview-btn');
 const generatorCopyBtn = $('#generator-copy-btn');
 const generatorSendBtn = $('#generator-send-btn');
+const generatorHero = $('#generator-hero');
+const generatorReadyCard = $('#generator-ready-card');
+const generatorReadyLabel = $('#generator-ready-label');
+const generatorReadyMessage = $('#generator-ready-message');
+const generatorReadyRequired = $('#generator-ready-required');
+const generatorReadySections = $('#generator-ready-sections');
+const generatorReadyMaterials = $('#generator-ready-materials');
+const generatorInsightList = $('#generator-insight-list');
+const generatorMissingList = $('#generator-missing-list');
+const generatorPromptLength = $('#generator-prompt-length');
+const generatorPromptLines = $('#generator-prompt-lines');
+const generatorMaterialCount = $('#generator-material-count');
+const generatorBlockCount = $('#generator-block-count');
+const generatorCurrentStepTitle = $('#generator-current-step-title');
+const generatorCurrentStepDesc = $('#generator-current-step-desc');
+const generatorPreviewSummary = $('#generator-preview-summary');
+const generatorActionStatusVisual = $('#generator-action-status-visual');
 const generatorStepList = $('#generator-step-list');
 const generatorStatus = $('#generator-status');
 const generatorPreviewModal = $('#generator-preview-modal');
@@ -560,7 +577,58 @@ function materialTypeOptions() {
   };
 }
 
+function generatorUiCopy() {
+  if (state.locale === 'en') {
+    return {
+      panelEyebrow: 'Form workspace',
+      panelTitle: 'Complete the scenario one step at a time',
+      panelSubtitle: 'Use the left rail to keep the scenario honest, and the right rail to judge prompt quality in real time.',
+      insightTitle: 'Build map',
+      insightCopy: 'A compressed narrative of what this Skill is trying to do right now.',
+      insightListLabel: 'Current scenario',
+      missingListLabel: 'Missing pieces',
+      missingEmpty: 'Key information is already in place. You can refine quality or go generate now.',
+      previewTitle: 'Prompt signal',
+      previewCopy: 'Track prompt size, the active step, and the blocks that will be sent to OpenClaw.',
+      currentStep: 'Current step',
+      previewSummaryLabel: 'The generated prompt will include',
+      chars: 'Prompt chars',
+      lines: 'Prompt lines',
+      materials: 'Materials',
+      blocks: 'Blocks',
+      heroChips: ['Structured output', 'Editable blocks', 'One-click OpenClaw send'],
+      readyRequired: ({ filled, total }) => `Required ${filled}/${total}`,
+      readySections: ({ filled, total }) => `Steps ${filled}/${total}`,
+      readyMaterials: ({ count }) => `${count} materials`
+    };
+  }
+
+  return {
+    panelEyebrow: '填写工作区',
+    panelTitle: '沿着步骤把信息补齐',
+    panelSubtitle: '左侧看蓝图，右侧看结果，中间专注填写当前步骤。',
+    insightTitle: '生成蓝图',
+    insightCopy: '这里会把你当前填写的场景压缩成简洁摘要，帮你判断是不是在做同一件事。',
+    insightListLabel: '当前场景',
+    missingListLabel: '还差什么',
+    missingEmpty: '关键信息已经齐了，可以继续打磨质量，或者直接生成。',
+    previewTitle: 'Prompt Signal',
+    previewCopy: '实时观察 Prompt 的体量、当前阶段以及最终会产出的关键区块。',
+    currentStep: '当前步骤',
+    previewSummaryLabel: '生成后会包含',
+    chars: 'Prompt 字数',
+    lines: 'Prompt 行数',
+    materials: '参考材料',
+    blocks: '结果区块',
+    heroChips: ['结构化输出', '区块可编辑', '一键发送 OpenClaw'],
+    readyRequired: ({ filled, total }) => `必填 ${filled}/${total}`,
+    readySections: ({ filled, total }) => `步骤 ${filled}/${total}`,
+    readyMaterials: ({ count }) => `${count} 份材料`
+  };
+}
+
 function renderStaticCopy() {
+  const generatorCopy = generatorUiCopy();
   setLocale(state.locale);
   setTheme(state.theme, false);
   setText('#app-title', translate('app.title'));
@@ -617,12 +685,28 @@ function renderStaticCopy() {
   const librarySectionTitle = document.querySelector('#library-view .skill-header .section-title');
   if (librarySectionTitle) librarySectionTitle.textContent = translate('library.sectionTitle');
 
-  const generatorSectionTitle = document.querySelector('#generator-view .skill-header .section-title');
-  if (generatorSectionTitle) generatorSectionTitle.textContent = translate('generator.title');
-  const generatorHeadline = document.querySelector('#generator-view .skill-header h2');
-  if (generatorHeadline) generatorHeadline.textContent = translate('generator.headline');
-  const generatorSubtitle = document.querySelector('#generator-view .skill-header .skill-subtitle');
-  if (generatorSubtitle) generatorSubtitle.textContent = translate('generator.subtitle');
+  setText('#generator-hero-eyebrow', translate('generator.title'));
+  setText('#generator-hero-title', translate('generator.headline'));
+  setText('#generator-hero-subtitle', translate('generator.subtitle'));
+  setText('#generator-panel-eyebrow', generatorCopy.panelEyebrow);
+  setText('#generator-panel-title', generatorCopy.panelTitle);
+  setText('#generator-panel-subtitle', generatorCopy.panelSubtitle);
+  setText('#generator-ready-eyebrow', state.locale === 'en' ? 'Readiness' : '生成状态');
+  setText('#generator-insight-title', generatorCopy.insightTitle);
+  setText('#generator-insight-copy', generatorCopy.insightCopy);
+  setText('#generator-insight-list-label', generatorCopy.insightListLabel);
+  setText('#generator-missing-list-label', generatorCopy.missingListLabel);
+  setText('#generator-preview-title', generatorCopy.previewTitle);
+  setText('#generator-preview-copy', generatorCopy.previewCopy);
+  setText('#generator-current-step-eyebrow', generatorCopy.currentStep);
+  setText('#generator-preview-summary-label', generatorCopy.previewSummaryLabel);
+  setText('#generator-prompt-length-label', generatorCopy.chars);
+  setText('#generator-prompt-lines-label', generatorCopy.lines);
+  setText('#generator-material-count-label', generatorCopy.materials);
+  setText('#generator-block-count-label', generatorCopy.blocks);
+  setText('#generator-hero-chip-1', generatorCopy.heroChips[0]);
+  setText('#generator-hero-chip-2', generatorCopy.heroChips[1]);
+  setText('#generator-hero-chip-3', generatorCopy.heroChips[2]);
   const stepperCopy = document.querySelector('.generator-stepper-copy');
   if (stepperCopy) stepperCopy.textContent = translate('generator.stepperCopy');
 
@@ -1586,32 +1670,20 @@ function buildTagClass(skill) {
 }
 
 function renderViewTabs() {
-  viewTabs.innerHTML = `
-    <button class="view-tab ${state.view === 'generator' ? 'active' : ''}" data-view-tab="generator" type="button">${translate('tabs.generator')}</button>
-    <button class="view-tab ${state.view === 'library' ? 'active' : ''}" data-view-tab="library" type="button">${translate('tabs.library')}</button>
-  `;
-
-  viewTabs.querySelectorAll('[data-view-tab]').forEach((button) => {
-    button.addEventListener('click', () => {
-      state.view = button.dataset.viewTab;
-      renderAll();
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    });
-  });
+  state.view = 'generator';
+  if (viewTabs) {
+    viewTabs.hidden = true;
+    viewTabs.innerHTML = '';
+  }
 }
 
 function renderViewPanels() {
-  libraryView.hidden = state.view !== 'library';
-  generatorView.hidden = state.view !== 'generator';
-  if (state.view !== 'library') {
-    state.workbenchOpen = false;
-  }
-  if (state.view !== 'generator') {
-    state.generator.previewOpen = false;
-    state.generator.materialPreviewId = '';
-  }
+  state.view = 'generator';
+  libraryView.hidden = true;
+  generatorView.hidden = false;
+  state.workbenchOpen = false;
   if (workbenchModal) {
-    workbenchModal.hidden = !(state.view === 'library' && state.workbenchOpen);
+    workbenchModal.hidden = true;
   }
   syncBodyModalState();
 }
@@ -2633,6 +2705,89 @@ function renderGeneratorWizard() {
   generatorPreviewBtn.dataset.action = isLastStep ? 'open-preview-modal' : 'next-generator-step';
 }
 
+function generatorNoticeToneClass(tone) {
+  if (tone === 'good') return 'good';
+  if (tone === 'warn') return 'warn';
+  if (tone === 'danger') return 'danger';
+  return 'neutral';
+}
+
+function renderGeneratorCockpit() {
+  const payload = getGeneratorPayload();
+  const copy = generatorUiCopy();
+  const readiness = state.generator.readiness;
+  const progress = generatorHelpers.getGeneratorProgress(payload);
+  const summaryLines = generatorHelpers.buildScenarioSummary(payload, state.locale);
+  const missingItems = state.generator.validation.topIssues.slice(0, 4);
+  const promptBlocks = currentPromptBlocks();
+  const promptStats = generatorHelpers.getPromptStats(currentPromptText());
+  const currentGroup = generatorHelpers.GROUPS[getCurrentGeneratorStep()] || generatorHelpers.GROUPS[0];
+  const completedSections = progress.sections.filter((section) => section.complete).length;
+
+  if (generatorReadyCard) {
+    generatorReadyCard.dataset.tone = readiness.tone;
+  }
+  if (generatorReadyLabel) generatorReadyLabel.textContent = readiness.label;
+  if (generatorReadyMessage) generatorReadyMessage.textContent = readiness.message;
+  if (generatorReadyRequired) {
+    generatorReadyRequired.textContent = copy.readyRequired({
+      filled: progress.requiredFilled,
+      total: progress.requiredTotal
+    });
+  }
+  if (generatorReadySections) {
+    generatorReadySections.textContent = copy.readySections({
+      filled: completedSections,
+      total: progress.sections.length
+    });
+  }
+  if (generatorReadyMaterials) {
+    generatorReadyMaterials.textContent = copy.readyMaterials({
+      count: payload.referenceMaterials.length
+    });
+  }
+
+  if (generatorInsightList) {
+    generatorInsightList.innerHTML = summaryLines.map((line, index) => `
+      <div class="generator-insight-item">
+        <strong>${escapeHtml(state.locale === 'en' ? `Insight ${index + 1}` : `摘要 ${index + 1}`)}</strong>
+        <p>${escapeHtml(line)}</p>
+      </div>
+    `).join('');
+  }
+
+  if (generatorMissingList) {
+    generatorMissingList.innerHTML = missingItems.length
+      ? missingItems.map((item) => `
+        <div class="generator-missing-item">
+          <p>${escapeHtml(item)}</p>
+        </div>
+      `).join('')
+      : `<div class="generator-missing-item empty"><p>${escapeHtml(copy.missingEmpty)}</p></div>`;
+  }
+
+  if (generatorPromptLength) generatorPromptLength.textContent = String(promptStats.length);
+  if (generatorPromptLines) generatorPromptLines.textContent = String(promptStats.lines);
+  if (generatorMaterialCount) generatorMaterialCount.textContent = String(payload.referenceMaterials.length);
+  if (generatorBlockCount) generatorBlockCount.textContent = String(promptBlocks.length);
+  if (generatorCurrentStepTitle) generatorCurrentStepTitle.textContent = translate(`generator.sections.${currentGroup.key}.title`);
+  if (generatorCurrentStepDesc) generatorCurrentStepDesc.textContent = translate(`generator.sections.${currentGroup.key}.desc`);
+
+  if (generatorPreviewSummary) {
+    generatorPreviewSummary.innerHTML = promptBlocks.slice(0, 5).map((block) => `
+      <div class="generator-summary-item">
+        <strong>${escapeHtml(block.title)}</strong>
+        <p>${escapeHtml((block.isEditing ? block.draftContent : block.content).trim().split(/\n+/)[0] || (state.locale === 'en' ? 'Ready for review in the preview modal.' : '可在预览弹窗里进一步编辑。'))}</p>
+      </div>
+    `).join('');
+  }
+
+  if (generatorActionStatusVisual) {
+    generatorActionStatusVisual.className = `notice-banner ${generatorNoticeToneClass(state.generator.lastSendTone)} generator-action-status`;
+    generatorActionStatusVisual.textContent = state.generator.lastSendStatus;
+  }
+}
+
 function getGeneratorMaterialById(materialId) {
   return state.generator.referenceMaterials.find((material) => material.id === materialId) || null;
 }
@@ -3043,6 +3198,7 @@ function renderGeneratorResults() {
   renderGeneratorMaterialPreview();
   renderGeneratorMaterialModal();
   renderGeneratorPromptBlocks();
+  renderGeneratorCockpit();
   const canAct = Boolean(currentPromptText().trim());
   generatorSendBtn.disabled = !canAct;
   generatorCopyBtn.disabled = !canAct;

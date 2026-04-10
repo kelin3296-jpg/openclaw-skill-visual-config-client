@@ -580,9 +580,9 @@ function materialTypeOptions() {
 function generatorUiCopy() {
   if (state.locale === 'en') {
     return {
-      panelEyebrow: 'Form workspace',
-      panelTitle: 'Complete the scenario one step at a time',
-      panelSubtitle: 'Use the left rail to keep the scenario honest, and the right rail to judge prompt quality in real time.',
+      panelEyebrow: 'Skill Generator',
+      panelTitle: 'Workspace',
+      panelSubtitle: 'Fill the template and form fields directly, then generate the final Skill prompt.',
       insightTitle: 'Build map',
       insightCopy: 'A compressed narrative of what this Skill is trying to do right now.',
       insightListLabel: 'Current scenario',
@@ -604,9 +604,9 @@ function generatorUiCopy() {
   }
 
   return {
-    panelEyebrow: '填写工作区',
-    panelTitle: '沿着步骤把信息补齐',
-    panelSubtitle: '左侧看蓝图，右侧看结果，中间专注填写当前步骤。',
+    panelEyebrow: 'Skill 生成器',
+    panelTitle: '填写工作区',
+    panelSubtitle: '直接填写模板、步骤和表单内容，最后生成并发送给 OpenClaw。',
     insightTitle: '生成蓝图',
     insightCopy: '这里会把你当前填写的场景压缩成简洁摘要，帮你判断是不是在做同一件事。',
     insightListLabel: '当前场景',

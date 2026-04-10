@@ -517,16 +517,16 @@ async function goToGeneratorFinalStep(page) {
   await page.waitForFunction(() => (document.querySelector('#generator-preview-btn')?.textContent || '').trim() === '生成');
 }
 
-test('generator workspace hides library navigation and exposes the new cockpit rails', async () => {
+test('generator workspace hides library navigation and renders as a single workbench', async () => {
   const { page, context } = await createPage();
 
   assert.equal(await page.locator('#generator-view').isVisible(), true);
   assert.equal(await page.locator('#library-view').isHidden(), true);
   assert.equal(await page.locator('#view-tabs').isHidden(), true);
-  assert.equal(await page.locator('#generator-hero').isVisible(), true);
-  assert.equal(await page.locator('#generator-insight-panel').isVisible(), true);
-  assert.equal(await page.locator('#generator-preview-card').isVisible(), true);
-  assert.equal(await page.locator('#generator-current-step-title').isVisible(), true);
+  assert.equal(await page.locator('#generator-hero').count(), 0);
+  assert.equal(await page.locator('#generator-insight-panel').count(), 0);
+  assert.equal(await page.locator('#generator-preview-card').count(), 0);
+  assert.equal(await page.locator('.generator-input-panel').isVisible(), true);
   assert.equal(await page.inputValue('#gen-scenario-name'), '');
   assert.equal(await page.getAttribute('#gen-scenario-name', 'placeholder'), '例如：会议纪要与行动项提炼');
   assert.equal(await page.locator('#generator-preview-btn').count(), 1);
@@ -540,9 +540,8 @@ test('generator workspace hides library navigation and exposes the new cockpit r
   await page.waitForFunction(() => document.querySelector('#gen-scenario-name')?.value === 'PRD 需求文档生成');
   assert.match(await page.inputValue('#gen-scenario-name'), /PRD 需求文档生成/);
   assert.match(await page.textContent('#generator-template-description'), /PRD|需求/);
-  assert.equal(await page.getAttribute('#generator-ready-card', 'data-tone'), 'good');
-  assert.match(await page.textContent('#generator-insight-list'), /PRD 需求文档生成/);
-  assert.match(await page.textContent('#generator-preview-summary'), /SKILL\.md|结构化 PRD|PRD/);
+  assert.match(await page.textContent('#generator-panel-title'), /填写工作区|Workspace/);
+  assert.match(await page.textContent('.generator-input-panel'), /PRD 需求文档生成/);
 
   await page.click('#generator-trigger-mode-list [data-chip-value="keyword"]');
   assert.equal(await page.locator('#generator-keyword-config').isHidden(), false);
@@ -579,7 +578,8 @@ test('primary UI keeps the library surface hidden from navigation and first-scre
   assert.equal(await page.locator('#library-view').isHidden(), true);
   assert.equal(await page.locator('#library-view [data-skill-name]').count(), 2);
   assert.equal(await page.locator('#generator-view').isVisible(), true);
-  assert.match(await page.textContent('#generator-hero'), /Skill 指令|Skill prompt|OpenClaw/);
+  assert.equal(await page.locator('#generator-hero').count(), 0);
+  assert.match(await page.textContent('#generator-panel-title'), /填写工作区|Workspace/);
   assert.deepEqual(pageErrors, []);
 
   await context.close();
@@ -604,7 +604,7 @@ test('browser mode renders dashboard when cron telemetry is unavailable', async 
   await page.waitForSelector('#generator-view');
   assert.equal(await page.locator('#view-tabs').isHidden(), true);
   assert.equal(await page.locator('#library-view').isHidden(), true);
-  assert.equal(await page.locator('#generator-preview-card').isVisible(), true);
+  assert.equal(await page.locator('.generator-input-panel').isVisible(), true);
   assert.match(await page.textContent('#top-control-link'), /打开 OpenClaw/);
   assert.deepEqual(pageErrors, []);
 
@@ -625,32 +625,29 @@ test('browser mode falls back when dashboard environment is missing', async () =
   const { page, context, pageErrors } = await createPage({ serverUrl: handle.url });
   await page.waitForSelector('#generator-view');
   assert.equal(await page.locator('#view-tabs').isHidden(), true);
-  assert.equal(await page.locator('#generator-insight-panel').isVisible(), true);
+  assert.equal(await page.locator('.generator-input-panel').isVisible(), true);
   assert.deepEqual(pageErrors, []);
 
   await context.close();
   await new Promise((resolve) => handle.server.close(resolve));
 });
 
-test('generator cockpit keeps comfortable spacing between hero, rails, and fixed toolbar', async () => {
+test('generator workspace uses a single-column layout without side rails', async () => {
   const { page, context } = await createPage();
 
-  const spacing = await page.evaluate(() => {
-    const getBox = (selector) => {
-      const rect = document.querySelector(selector).getBoundingClientRect();
-      return { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom };
-    };
-    const gapEnough = (a, b) => (b.left - a.right >= 8) || (b.top - a.bottom >= 8) || (a.top - b.bottom >= 8);
+  const layout = await page.evaluate(() => {
+    const shell = document.querySelector('#generator-view').getBoundingClientRect();
+    const panel = document.querySelector('.generator-input-panel').getBoundingClientRect();
     return {
-      heroToLayout: gapEnough(getBox('#generator-hero'), getBox('#generator-insight-panel')),
-      railToPanel: gapEnough(getBox('#generator-insight-panel'), getBox('.generator-input-panel')),
-      panelToPreview: gapEnough(getBox('.generator-input-panel'), getBox('#generator-preview-card'))
+      panelWideEnough: panel.width >= shell.width - 64,
+      leftAligned: Math.abs(panel.left - shell.left) <= 24,
+      noSidePanels: document.querySelectorAll('.generator-side-panel').length === 0
     };
   });
 
-  assert.equal(spacing.heroToLayout, true);
-  assert.equal(spacing.railToPanel, true);
-  assert.equal(spacing.panelToPreview, true);
+  assert.equal(layout.panelWideEnough, true);
+  assert.equal(layout.leftAligned, true);
+  assert.equal(layout.noSidePanels, true);
 
   await context.close();
 });
@@ -661,21 +658,20 @@ test('language toggle switches core copy and persists to localStorage', async ()
   assert.match(await page.textContent('#app-title'), /爪工坊/);
   assert.match(await page.textContent('#app-subtitle'), /围绕 Skill 生成器的轻量开源工作台/);
   assert.match(await page.textContent('#top-control-link'), /打开 OpenClaw/);
-  assert.match(await page.textContent('#generator-hero'), /可发送给 OpenClaw|Skill 指令/);
+  assert.match(await page.textContent('#generator-panel-title'), /填写工作区/);
 
   await page.click('#language-toggle-btn');
 
   await page.waitForFunction(() => (document.querySelector('#language-toggle-btn')?.textContent || '').trim() === '中');
   assert.match(await page.textContent('#app-subtitle'), /lightweight open-source workspace for Skill generation/i);
   assert.match(await page.textContent('#top-control-link'), /Open OpenClaw/);
-  assert.match(await page.textContent('#generator-hero'), /Skill prompt|OpenClaw/);
-  assert.match(await page.textContent('#generator-insight-panel'), /Build map|Prompt signal|Missing pieces|Current step/);
+  assert.match(await page.textContent('#generator-panel-title'), /Workspace/);
 
   const storedLocale = await page.evaluate(() => window.localStorage.getItem('clawforge-locale'));
   assert.equal(storedLocale, 'en');
 
   await page.reload({ waitUntil: 'networkidle' });
-  assert.match(await page.textContent('#generator-hero'), /Skill prompt|OpenClaw/);
+  assert.match(await page.textContent('#generator-panel-title'), /Workspace/);
 
   await context.close();
 });
@@ -725,13 +721,13 @@ test('generator footer bar and modal actions stay pinned while scrolling', async
 
   const topShellPinned = await page.evaluate(async () => {
     const topShell = document.querySelector('.top-shell');
-    const hero = document.querySelector('#generator-hero');
+    const panel = document.querySelector('.generator-input-panel');
     const shell = document.querySelector('.shell');
     const measure = () => ({
       top: Math.round(topShell.getBoundingClientRect().top),
-      heroWidth: Math.round(hero.getBoundingClientRect().width),
+      panelWidth: Math.round(panel.getBoundingClientRect().width),
       viewportWidth: Math.round(window.innerWidth),
-      heroLeft: Math.round(hero.getBoundingClientRect().left),
+      panelLeft: Math.round(panel.getBoundingClientRect().left),
       shellLeft: Math.round(shell.getBoundingClientRect().left)
     });
 
@@ -742,13 +738,13 @@ test('generator footer bar and modal actions stay pinned while scrolling', async
 
     return {
       stickyTop: after.top <= 2,
-      compactHero: before.heroWidth < before.viewportWidth - 32,
-      leftAligned: Math.abs(before.heroLeft - before.shellLeft) <= 24
+      compactPanel: before.panelWidth < before.viewportWidth - 32,
+      leftAligned: Math.abs(before.panelLeft - before.shellLeft) <= 24
     };
   });
 
   assert.equal(topShellPinned.stickyTop, true);
-  assert.equal(topShellPinned.compactHero, true);
+  assert.equal(topShellPinned.compactPanel, true);
   assert.equal(topShellPinned.leftAligned, true);
 
   const generatorPinned = await page.evaluate(async () => {

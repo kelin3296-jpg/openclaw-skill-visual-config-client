@@ -1443,7 +1443,7 @@
 
       .generator-shell {
         display: grid;
-        gap: 24px;
+        gap: 18px;
         padding-bottom: 140px;
       }
 
@@ -1596,10 +1596,7 @@
       .generator-layout {
         width: 100%;
         margin: 0;
-        display: grid;
-        grid-template-columns: minmax(250px, 280px) minmax(0, 1fr) minmax(280px, 320px);
-        gap: 22px;
-        align-items: start;
+        display: block;
       }
 
       .generator-panel {
@@ -2929,55 +2926,12 @@
       </div>
 
       <section class="generator-shell" id="generator-view">
-        <section class="panel generator-hero" id="generator-hero">
-          <div class="generator-hero-copy">
-            <div class="section-title" id="generator-hero-eyebrow">Skill 生成器</div>
-            <h2 id="generator-hero-title">把一个重复场景整理成可发送给 OpenClaw 的 Skill 指令</h2>
-            <p class="skill-subtitle generator-hero-subtitle" id="generator-hero-subtitle">
-              采用三步式填写：先定义场景与触发，再补输入输出与流程，最后补约束与参考材料。
-            </p>
-            <div class="generator-hero-chips">
-              <span class="generator-hero-chip" id="generator-hero-chip-1">结构化输出</span>
-              <span class="generator-hero-chip" id="generator-hero-chip-2">区块可编辑</span>
-              <span class="generator-hero-chip" id="generator-hero-chip-3">一键发送 OpenClaw</span>
-            </div>
-          </div>
-          <div class="generator-ready-card" id="generator-ready-card" data-tone="neutral">
-            <div class="section-title" id="generator-ready-eyebrow">生成状态</div>
-            <div class="generator-ready-label" id="generator-ready-label">尚未开始</div>
-            <div class="generator-ready-message" id="generator-ready-message">可以先从步骤一开始，先把场景和触发方式写清楚。</div>
-            <div class="generator-ready-metrics">
-              <span class="file-chip" id="generator-ready-required">必填 0/6</span>
-              <span class="file-chip" id="generator-ready-sections">步骤 0/3</span>
-              <span class="file-chip" id="generator-ready-materials">0 份材料</span>
-            </div>
-          </div>
-        </section>
-
         <div class="generator-layout">
-          <aside class="panel generator-side-panel generator-insight-panel" id="generator-insight-panel">
-            <div class="generator-side-head">
-              <div class="section-title" id="generator-insight-title">生成蓝图</div>
-              <p class="generator-side-copy" id="generator-insight-copy">这里会把你当前填写的场景压缩成简洁摘要，帮你判断是不是在做同一件事。</p>
-            </div>
-            <div class="generator-side-section">
-              <div class="generator-side-label" id="generator-insight-list-label">当前场景</div>
-              <div class="generator-insight-list" id="generator-insight-list"></div>
-            </div>
-            <div class="generator-side-section">
-              <div class="generator-side-label" id="generator-missing-list-label">还差什么</div>
-              <div class="generator-missing-list" id="generator-missing-list"></div>
-            </div>
-          </aside>
-
           <section class="panel generator-panel generator-input-panel">
             <div class="skill-header generator-panel-header">
               <div>
-                <div class="section-title" id="generator-panel-eyebrow">填写工作区</div>
-                <h2 id="generator-panel-title">沿着步骤把信息补齐</h2>
-                <p class="skill-subtitle" id="generator-panel-subtitle">
-                  左侧看蓝图，右侧看结果，中间专注填写当前步骤。
-                </p>
+                <div class="section-title" id="generator-panel-eyebrow">Skill 生成器</div>
+                <h2 id="generator-panel-title">填写工作区</h2>
               </div>
             </div>
 
@@ -3001,9 +2955,6 @@
             </div>
 
             <section class="generator-stepper" aria-label="Skill 生成步骤">
-              <div class="generator-stepper-head">
-                <div class="generator-stepper-copy">先用模板或空白开始，再按三个步骤逐步填写。只有到最后一步才显示“生成”。</div>
-              </div>
               <div class="generator-step-list" id="generator-step-list"></div>
             </section>
 
@@ -3295,45 +3246,6 @@
               </section>
             </form>
           </section>
-
-          <aside class="panel generator-side-panel generator-preview-card" id="generator-preview-card">
-            <div class="generator-side-head">
-              <div class="section-title" id="generator-preview-title">Prompt Signal</div>
-              <p class="generator-side-copy" id="generator-preview-copy">实时观察 Prompt 的体量、当前阶段以及最终会产出的关键区块。</p>
-            </div>
-
-            <div class="generator-metric-grid">
-              <div class="generator-metric">
-                <span class="generator-metric-value" id="generator-prompt-length">0</span>
-                <span class="generator-metric-label" id="generator-prompt-length-label">Prompt 字数</span>
-              </div>
-              <div class="generator-metric">
-                <span class="generator-metric-value" id="generator-prompt-lines">0</span>
-                <span class="generator-metric-label" id="generator-prompt-lines-label">Prompt 行数</span>
-              </div>
-              <div class="generator-metric">
-                <span class="generator-metric-value" id="generator-material-count">0</span>
-                <span class="generator-metric-label" id="generator-material-count-label">参考材料</span>
-              </div>
-              <div class="generator-metric">
-                <span class="generator-metric-value" id="generator-block-count">0</span>
-                <span class="generator-metric-label" id="generator-block-count-label">结果区块</span>
-              </div>
-            </div>
-
-            <section class="generator-current-step" id="generator-current-step-card">
-              <div class="generator-side-label" id="generator-current-step-eyebrow">当前步骤</div>
-              <h3 id="generator-current-step-title">A. 场景与触发</h3>
-              <p class="generator-side-copy" id="generator-current-step-desc">先讲清楚这是什么场景、什么时候触发、最终想要什么结果。</p>
-            </section>
-
-            <div class="generator-side-section">
-              <div class="generator-side-label" id="generator-preview-summary-label">生成后会包含</div>
-              <div class="generator-preview-summary" id="generator-preview-summary"></div>
-            </div>
-
-            <div class="notice-banner neutral generator-action-status" id="generator-action-status-visual">你可以从第一步开始填写场景，最后一步再点“生成”。</div>
-          </aside>
         </div>
 
         <div class="generator-toolbar">
